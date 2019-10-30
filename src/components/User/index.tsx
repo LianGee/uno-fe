@@ -1,0 +1,55 @@
+import React, { Component } from 'react';
+import { Select } from 'antd';
+import { query } from '@/services/user';
+import { CurrentUser } from '@/models/user';
+
+const { Option } = Select;
+
+interface UserSelectProps {
+  width: string;
+}
+
+interface UserSelectState {
+  users: CurrentUser[];
+  value: [];
+}
+
+class UserSelect extends Component<UserSelectProps, UserSelectState> {
+  static defaultProps = {
+    width: '100%',
+  };
+
+  constructor(props: any) {
+    super(props);
+    const { value } = props;
+    this.state = {
+      users: [],
+      value: value === undefined ? [] : value,
+    };
+  }
+
+  componentDidMount(): void {
+    query().then(res => (
+      this.setState({
+        users: res,
+      })
+    ));
+    console.log('userselect', this.props);
+  }
+
+  render() {
+    const { width } = this.props;
+    const { users, value } = this.state;
+    return (
+      <Select mode="multiple" style={{ width }} defaultValue={value}>
+        {
+          users.map((item: CurrentUser) => (
+            <Option value={item.name} key={item.id}>{item.name}</Option>
+          ))
+        }
+      </Select>
+    );
+  }
+}
+
+export default UserSelect;

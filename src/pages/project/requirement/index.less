@@ -1,0 +1,29 @@
+@import '~antd/es/style/themes/default.less';
+
+.newButton {
+  margin-bottom: 20px;
+}
+
+.card {
+  :global {
+    .ant-card-head-title {
+      padding-bottom: 0;
+
+      & > a {
+        display: inline-block;
+        max-width: 100%;
+        color: @heading-color;
+      }
+    }
+  }
+}
+
+.typography {
+  margin-bottom: 0;
+  margin-left: 1em;
+  :global {
+    .ant-typography-edit {
+      float: right;
+    }
+  }
+}
