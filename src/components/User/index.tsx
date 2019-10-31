@@ -7,6 +7,7 @@ const { Option } = Select;
 
 interface UserSelectProps {
   width: string;
+  onChange: any;
 }
 
 interface UserSelectState {
@@ -17,6 +18,8 @@ interface UserSelectState {
 class UserSelect extends Component<UserSelectProps, UserSelectState> {
   static defaultProps = {
     width: '100%',
+    onChange: () => {
+    },
   };
 
   constructor(props: any) {
@@ -34,14 +37,13 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
         users: res,
       })
     ));
-    console.log('userselect', this.props);
   }
 
   render() {
-    const { width } = this.props;
+    const { width, onChange } = this.props;
     const { users, value } = this.state;
     return (
-      <Select mode="multiple" style={{ width }} defaultValue={value}>
+      <Select mode="multiple" style={{ width }} defaultValue={value} onChange={onChange}>
         {
           users.map((item: CurrentUser) => (
             <Option value={item.name} key={item.id}>{item.name}</Option>

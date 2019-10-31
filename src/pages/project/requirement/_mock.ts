@@ -85,7 +85,55 @@ function getRequirementById(req: Request, res: Response) {
   return res.json(requirement);
 }
 
+const comments: any = [{
+  id: 1,
+  content: '测试评论',
+  author: {
+    name: '曲丽丽',
+    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+  },
+  children: [
+    {
+      id: 2,
+      content: '测试评论',
+      author: {
+        name: '曲丽丽',
+        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+      },
+    },
+  ],
+}, {
+  id: 3,
+  content: '测试评论',
+  author: {
+    name: '曲丽丽',
+    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+  },
+  children: [
+    {
+      id: 4,
+      content: '测试评论',
+      author: {
+        name: '曲丽丽',
+        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+      },
+    },
+  ],
+}];
+
+function getRequirementComments(req: Request, res: Response) {
+  const params = req.query;
+  const ans = [];
+  for (let i = 0; i < comments.length; i += 1) {
+    const comment = { ...comments[i] };
+    comment.content += comment.content + params.id;
+    ans.push(comment);
+  }
+  return res.json(ans);
+}
+
 export default {
   'GET  /requirement/list': getFakeList,
   'GET /requirement/detail': getRequirementById,
+  'GET /requirement/comments': getRequirementComments,
 };

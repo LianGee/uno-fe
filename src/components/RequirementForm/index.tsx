@@ -8,6 +8,11 @@ import { Requirement } from '@/pages/project/requirement/data';
 interface RequirementFormProps {
   form: any;
   requirement: Requirement;
+  onChange: any;
+}
+
+function contentChange(e: any) {
+  console.log(e);
 }
 
 const RegisterRequirementForm = (props: RequirementFormProps) => {
@@ -68,10 +73,12 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
           rules: [
             {
               required: true,
+              min: 15,
+              message: '最少15字',
             },
           ],
           initialValue: requirement.content,
-        })(<Editor/>)}
+        })(<Editor onChange={contentChange}/>)}
       </Form.Item>
       <Form.Item label="指派给">
         {getFieldDecorator('assignTo', {
@@ -87,5 +94,9 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
   );
 };
 
-const RequirementForm = Form.create<RequirementFormProps>()(RegisterRequirementForm);
+const RequirementForm = Form.create<RequirementFormProps>({
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  },
+})(RegisterRequirementForm);
 export default RequirementForm;

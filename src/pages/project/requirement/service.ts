@@ -9,3 +9,7 @@ export async function queryFakeList(params: { projectId: number }) {
 export async function queryRequirementById(id: number) {
   return request(`/requirement/detail?id=${id}`)
 }
+
+export async function queryRequirementComments(id: number) {
+  return request(`/requirement/comments?id=${id}`)
+}
