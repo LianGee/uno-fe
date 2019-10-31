@@ -9,7 +9,6 @@ import RequirementList from '@/pages/project/requirement/list';
 import { Project } from '@/models/project';
 import styles from './index.less';
 
-
 interface RequirementManagerProps extends ConnectState {
   dispatch: Dispatch<any>;
 }
@@ -18,25 +17,38 @@ interface RequirementManagerState {
   currentProject: Project;
 }
 
-@connect((
-  { project, user }: RequirementManagerProps) => ({
-  project, user,
+@connect(({ project, user }: RequirementManagerProps) => ({
+  project,
+  user,
 }))
 class RequirementManager extends Component<RequirementManagerProps, RequirementManagerState> {
+  constructor(props: any) {
+    super(props);
+    console.log(props);
+  }
+
+  componentDidMount(): void {}
 
   render() {
-    const { project: { currentProject = {} as Project } } = this.props;
+    const {
+      project: { currentProject = {} as Project },
+    } = this.props;
     return (
       <PageHeaderWrapper title={false}>
         <Card>
-          <Link to={{
-            pathname: '/project/requirement/create',
-          }} title="新建需求">
-            <Button type="primary" className={styles.newButton}>新建需求</Button>
+          <Link
+            to={{
+              pathname: '/project/requirement/create',
+            }}
+            title="新建需求"
+          >
+            <Button type="primary" className={styles.newButton}>
+              新建需求
+            </Button>
           </Link>
-          {
-            currentProject.hasOwnProperty('id') ? <RequirementList currentProject={currentProject}/> : null
-          }
+          {currentProject.hasOwnProperty('id') ? (
+            <RequirementList currentProject={currentProject} />
+          ) : null}
         </Card>
       </PageHeaderWrapper>
     );

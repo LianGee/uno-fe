@@ -69,28 +69,30 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         title: '优先级',
         dataIndex: 'priority',
         key: 'priority',
-      }, {
+      },
+      {
         title: '创建者',
         dataIndex: 'creator',
         key: 'creator',
-      }, {
+      },
+      {
         title: '指派给',
         dataIndex: 'assignTo',
         key: 'assignTo',
-      }, {
+      },
+      {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-      }, {
+      },
+      {
         title: '内容',
         dataIndex: 'content',
         key: 'content',
       },
     ];
     const { requirements } = this.state;
-    return (
-      <Table columns={columns} dataSource={requirements} rowKey="id"/>
-    );
+    return <Table columns={columns} dataSource={requirements} rowKey="id" />;
   }
 }
 

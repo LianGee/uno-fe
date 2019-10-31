@@ -14,7 +14,8 @@ const requirementList: any = [
     end: '2019-11-11',
     creator: 'bchen',
     assignTo: ['jhzhang', 'bchen'],
-  }, {
+  },
+  {
     id: 2,
     projectId: 1,
     title: '需求管理页面',
@@ -26,7 +27,8 @@ const requirementList: any = [
     end: '2019-11-11',
     creator: 'bchen',
     assignTo: ['jhzhang', 'bchen'],
-  }, {
+  },
+  {
     id: 3,
     projectId: 1,
     title: '需求管理页面',
@@ -38,7 +40,8 @@ const requirementList: any = [
     end: '2019-11-11',
     creator: 'bchen',
     assignTo: ['jhzhang', 'bchen'],
-  }, {
+  },
+  {
     id: 4,
     projectId: 1,
     title: '需求管理页面',
@@ -50,7 +53,8 @@ const requirementList: any = [
     end: '2019-11-11',
     creator: 'bchen',
     assignTo: ['jhzhang', 'bchen'],
-  }, {
+  },
+  {
     id: 5,
     projectId: 1,
     title: '需求管理页面',
@@ -78,48 +82,52 @@ function getFakeList(req: Request, res: Response) {
 
 function getRequirementById(req: Request, res: Response) {
   const params = req.query;
-  const requirement: Requirement =
-    requirementList.filter((item: any) => item.id - params.id === 0).pop();
+  const requirement: Requirement = requirementList
+    .filter((item: any) => item.id - params.id === 0)
+    .pop();
   requirement.content = '测试服';
   requirement.title += params.id;
   return res.json(requirement);
 }
 
-const comments: any = [{
-  id: 1,
-  content: '测试评论',
-  author: {
-    name: '曲丽丽',
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-  },
-  children: [
-    {
-      id: 2,
-      content: '测试评论',
-      author: {
-        name: '曲丽丽',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-      },
+const comments: any = [
+  {
+    id: 1,
+    content: '测试评论',
+    author: {
+      name: '曲丽丽',
+      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     },
-  ],
-}, {
-  id: 3,
-  content: '测试评论',
-  author: {
-    name: '曲丽丽',
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-  },
-  children: [
-    {
-      id: 4,
-      content: '测试评论',
-      author: {
-        name: '曲丽丽',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    children: [
+      {
+        id: 2,
+        content: '测试评论',
+        author: {
+          name: '曲丽丽',
+          avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        },
       },
+    ],
+  },
+  {
+    id: 3,
+    content: '测试评论',
+    author: {
+      name: '曲丽丽',
+      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     },
-  ],
-}];
+    children: [
+      {
+        id: 4,
+        content: '测试评论',
+        author: {
+          name: '曲丽丽',
+          avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        },
+      },
+    ],
+  },
+];
 
 function getRequirementComments(req: Request, res: Response) {
   const params = req.query;

@@ -8,10 +8,9 @@ import styles from './index.less';
 import SchedulingRequirementList from '@/components/SchedulingRequirementList';
 import SchedulingCreateModal from '@/components/SchedulingCreateModal';
 
-
 interface ProjectSchedulingProps {
-  project: any,
-  scheduling: any,
+  project: any;
+  scheduling: any;
   dispatch: Dispatch<any>;
 }
 
@@ -19,8 +18,9 @@ interface ProjectSchedulingState {
   visible: boolean;
 }
 
-@connect(({ project, scheduling }: { project: any, scheduling: any }) => ({
-  project, scheduling,
+@connect(({ project, scheduling }: { project: any; scheduling: any }) => ({
+  project,
+  scheduling,
 }))
 class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedulingState> {
   constructor(props: any) {
@@ -54,24 +54,22 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     const listData = scheduling[date] || [];
     const len = listData.length;
     return len === 0 ? (
-      <div className={styles.emptyRequirement}>
-      </div>
+      <div className={styles.emptyRequirement}></div>
     ) : (
       <ul className={styles.events}>
         {listData.map((item: any) => (
           <Popover
             placement="rightBottom"
-            content={<SchedulingRequirementList requirements={listData}/>}
+            content={<SchedulingRequirementList requirements={listData} />}
             title="Title"
             key={item.id}
           >
             <li key={item.id}>
-              <Badge status="success" text={item.content}/>
+              <Badge status="success" text={item.content} />
             </li>
           </Popover>
         ))}
       </ul>
-
     );
   };
 
@@ -89,12 +87,9 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     return len !== 0 ? (
       <div className="notes-month">
         <Timeline>
-          {
-            listData.map(item => (
-              <Timeline.Item>{item.content}</Timeline.Item>
-              ),
-            )
-          }
+          {listData.map(item => (
+            <Timeline.Item>{item.content}</Timeline.Item>
+          ))}
         </Timeline>
       </div>
     ) : null;
@@ -130,13 +125,18 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     return (
       <PageHeaderWrapper title={false}>
         <div className={styles.schedulingContent}>
-          <Calendar dateCellRender={this.dateCellRender}
-                    monthCellRender={this.monthCellRender}
-                    onSelect={(e: any) => this.onSelect(e)}/>
+          <Calendar
+            dateCellRender={this.dateCellRender}
+            monthCellRender={this.monthCellRender}
+            onSelect={(e: any) => this.onSelect(e)}
+          />
         </div>
-        <SchedulingCreateModal visible={visible} title="创建排期"
-                               onHandleCancel={this.onHandleCancel}
-                               onHandleOk={(thisForm: any) => this.onHandleOk(thisForm)}/>
+        <SchedulingCreateModal
+          visible={visible}
+          title="创建排期"
+          onHandleCancel={this.onHandleCancel}
+          onHandleOk={(thisForm: any) => this.onHandleOk(thisForm)}
+        />
       </PageHeaderWrapper>
     );
   }

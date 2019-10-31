@@ -6,6 +6,8 @@ interface SchedulingRequirementListProps {
 }
 
 class SchedulingRequirementList extends Component<SchedulingRequirementListProps> {
+  componentDidMount(): void {}
+
   render() {
     const columns = [
       {
@@ -16,7 +18,9 @@ class SchedulingRequirementList extends Component<SchedulingRequirementListProps
     ];
     const { requirements } = this.props;
     return (
-      <Table dataSource={requirements} columns={columns} rowKey="id"> </Table>
+      <Table dataSource={requirements} columns={columns} rowKey="id">
+        {' '}
+      </Table>
     );
   }
 }

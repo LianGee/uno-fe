@@ -40,13 +40,7 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
     wrapperCol: { span: 14 },
   };
   return (
-    <Modal
-      visible={visible}
-      title={title}
-      width={700}
-      onCancel={onCancel}
-      onOk={onCreate}
-    >
+    <Modal visible={visible} title={title} width={700} onCancel={onCancel} onOk={onCreate}>
       <Form {...formItemLayout}>
         <Form.Item label="服务名" extra="请输入小写全英文">
           {getFieldDecorator('name', {
@@ -61,7 +55,7 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
             ],
             initialValue: initialValues.name,
             validateTrigger: 'onBlur',
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="等级">
           {getFieldDecorator('priority', {
@@ -86,7 +80,7 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
               },
             ],
             initialValue: initialValues.description,
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="类型">
           {getFieldDecorator('type', {
@@ -124,12 +118,12 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
         <Form.Item label="前端域名" extra="前端/后端域必填一个">
           {getFieldDecorator('frontendHost', {
             initialValue: initialValues.frontendHost,
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="后端域名" extra="前端/后端域必填一个">
           {getFieldDecorator('backendHost', {
             initialValue: initialValues.backendHost,
-          })(<Input/>)}
+          })(<Input />)}
         </Form.Item>
         <Form.Item
           label="负责人"
@@ -144,7 +138,7 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
                 message: '负责人不得少于2个',
               },
             ],
-          })(<UserSelect/>)}
+          })(<UserSelect />)}
         </Form.Item>
       </Form>
     </Modal>

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-
 function getFakeList(req: Request, res: Response) {
   const data = {};
   const dateRange = ['2019-09-01', '2019-10-02', '2019-11-01', '2019-12-01', '2019-08-01'];

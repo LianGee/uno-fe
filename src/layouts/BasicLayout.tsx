@@ -57,7 +57,7 @@ const defaultFooterDom = (
     links={[
       {
         key: 'github',
-        title: <Icon type="github"/>,
+        title: <Icon type="github" />,
         href: 'https://github.com/LianGee/Neptune-fe',
         blankTarget: true,
       },

@@ -22,7 +22,6 @@ interface RequirementDetailState {
   comment: any;
 }
 
-
 class RequirementDetail extends Component<RequirementDetailProps, RequirementDetailState> {
   formRef: any;
 
@@ -61,18 +60,20 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
 
   renderTitle = () => {
     const { requirement } = this.state;
-    return (<Row>
-      <Col span={1}>标题:</Col>
-      <Col span={23}>
-        <Paragraph
-          editable={{ onChange: this.onTitleChange }}
-          strong
-          className={styles.typography}
-        >
-          {requirement.title}
-        </Paragraph>
-      </Col>
-    </Row>);
+    return (
+      <Row>
+        <Col span={1}>标题:</Col>
+        <Col span={23}>
+          <Paragraph
+            editable={{ onChange: this.onTitleChange }}
+            strong
+            className={styles.typography}
+          >
+            {requirement.title}
+          </Paragraph>
+        </Col>
+      </Row>
+    );
   };
 
   saveFormRef = (formRef: any) => {
@@ -109,31 +110,26 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     return (
       <PageHeaderWrapper title={false}>
         <Card title={this.renderTitle()} className={styles.card}>
-          {
-            !isCreate && (requirement.id === undefined)
-              ? null : (
-                <>
-                  <RequirementForm
-                    ref={this.saveFormRef}
-                    requirement={requirement}
-                    onChange={this.onChange}
-                  />
-                  <RequirementComment id={id}/>
-                  <div className={styles.comment}>
-                    <Mentions rows={3} placeholder="使用@圈人" onChange={this.onCommentChange}>
-                      <Option value="afc163">afc163</Option>
-                      <Option value="zombieJ">zombieJ</Option>
-                      <Option value="yesmeck">yesmeck</Option>
-                    </Mentions>
-                    <Button
-                      type="primary"
-                      className={styles.submitButton}
-                      onClick={this.onSubmit}
-                    >提交</Button>
-                  </div>
-                </>
-              )
-          }
+          {!isCreate && requirement.id === undefined ? null : (
+            <>
+              <RequirementForm
+                ref={this.saveFormRef}
+                requirement={requirement}
+                onChange={this.onChange}
+              />
+              <RequirementComment id={id} />
+              <div className={styles.comment}>
+                <Mentions rows={3} placeholder="使用@圈人" onChange={this.onCommentChange}>
+                  <Option value="afc163">afc163</Option>
+                  <Option value="zombieJ">zombieJ</Option>
+                  <Option value="yesmeck">yesmeck</Option>
+                </Mentions>
+                <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
+                  提交
+                </Button>
+              </div>
+            </>
+          )}
         </Card>
       </PageHeaderWrapper>
     );

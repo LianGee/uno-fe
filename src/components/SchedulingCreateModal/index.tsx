@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
-import SchedulingCreateForm from '@/components/SchedulingCreateModal/schedulingCreateForm';
+import SchedulingForm from './CreateForm';
 
 interface SchedulingCreateModalProps {
   visible: boolean;
@@ -12,6 +12,10 @@ interface SchedulingCreateModalProps {
 class SchedulingCreateModal extends Component<SchedulingCreateModalProps> {
   formRef = {};
 
+  saveFormRef = (inst: any) => {
+    this.formRef = inst;
+  };
+
   render() {
     const { visible, title, onHandleOk, onHandleCancel } = this.props;
     return (
@@ -22,8 +26,7 @@ class SchedulingCreateModal extends Component<SchedulingCreateModalProps> {
         onCancel={() => onHandleCancel()}
         width="800px"
       >
-        {/* eslint-disable-next-line no-return-assign */}
-        <SchedulingCreateForm wrappedComponentRef={(inst: any) => this.formRef = inst}/>
+        <SchedulingForm wrappedComponentRef={this.saveFormRef} />
       </Modal>
     );
   }

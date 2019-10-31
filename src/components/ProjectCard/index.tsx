@@ -25,7 +25,7 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
     super(props);
     this.state = {
       visible: false,
-      currentProject: undefined as unknown as Project,
+      currentProject: (undefined as unknown) as Project,
     };
   }
 
@@ -59,7 +59,6 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
     });
   };
 
-
   render() {
     const { project } = this.props;
     const color = ['geekblue', 'volcano', 'magenta'];
@@ -75,31 +74,31 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
           hoverable
           className={styles.card}
           actions={[
-            <Icon type="edit" key="edit" onClick={this.onCardEdit}/>,
-            <a href="https://ant.design/components/icon-cn/" target="blank"><Icon type="arrow-right"/></a>,
+            <Icon type="edit" key="edit" onClick={this.onCardEdit} />,
+            <a href="https://ant.design/components/icon-cn/" target="blank">
+              <Icon type="arrow-right" />
+            </a>,
           ]}
         >
           <Card.Meta
             title={<a>{project.name}</a>}
-            avatar={<img alt="" className={styles.cardLogo} src={project.logo}/>}
+            avatar={<img alt="" className={styles.cardLogo} src={project.logo} />}
             description={
               <section>
                 <Tag color="cyan">{project.business}</Tag>
                 <Tag color={color[project.priority || 0]}>{priority[project.priority || 0]}</Tag>
                 <Tag>{type[project.type || 0]}</Tag>
-                {
-                  project.language !== undefined
-                    ? project.language.map(item => (<Tag key={item}>{item}</Tag>)) : null
-                }
+                {project.language !== undefined
+                  ? project.language.map(item => <Tag key={item}>{item}</Tag>)
+                  : null}
                 <Paragraph className={styles.item} ellipsis={{ rows: 2 }}>
                   {project.description}
                 </Paragraph>
                 <Form {...formItemLayout}>
                   <FormItem label="负责人">
-                    {
-                      project.owner !== undefined
-                        ? project.owner.map(item => (<Tag key={item}>{item}</Tag>)) : null
-                    }
+                    {project.owner !== undefined
+                      ? project.owner.map(item => <Tag key={item}>{item}</Tag>)
+                      : null}
                   </FormItem>
                 </Form>
               </section>
