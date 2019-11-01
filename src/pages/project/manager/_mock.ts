@@ -49,7 +49,6 @@ const user = [
   '仲尼',
 ];
 
-
 function fakeList(count: number): Project[] {
   const list = [] as any;
   const languages = ['c/c++', 'java', 'python'];

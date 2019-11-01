@@ -18,8 +18,7 @@ interface UserSelectState {
 class UserSelect extends Component<UserSelectProps, UserSelectState> {
   static defaultProps = {
     width: '100%',
-    onChange: () => {
-    },
+    onChange: () => {},
   };
 
   constructor(props: any) {
@@ -32,11 +31,11 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
   }
 
   componentDidMount(): void {
-    query().then(res => (
+    query().then(res =>
       this.setState({
         users: res,
-      })
-    ));
+      }),
+    );
   }
 
   render() {
@@ -44,11 +43,11 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
     const { users, value } = this.state;
     return (
       <Select mode="multiple" style={{ width }} defaultValue={value} onChange={onChange}>
-        {
-          users.map((item: CurrentUser) => (
-            <Option value={item.name} key={item.id}>{item.name}</Option>
-          ))
-        }
+        {users.map((item: CurrentUser) => (
+          <Option value={item.name} key={item.id}>
+            {item.name}
+          </Option>
+        ))}
       </Select>
     );
   }

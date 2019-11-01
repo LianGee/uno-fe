@@ -33,11 +33,11 @@ const plugins: IPlugin[] = [
       // },
       pwa: pwa
         ? {
-          workboxPluginMode: 'InjectManifest',
-          workboxOptions: {
-            importWorkboxFrom: 'local',
-          },
-        }
+            workboxPluginMode: 'InjectManifest',
+            workboxOptions: {
+              importWorkboxFrom: 'local',
+            },
+          }
         : false,
       // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
@@ -121,29 +121,34 @@ export default {
                   name: 'manager',
                   icon: 'appstore',
                   component: './project/manager/index',
-                }, {
+                },
+                {
                   path: '/project/scheduling',
                   name: 'scheduling',
                   icon: 'align-left',
                   component: './project/scheduling/index',
-                }, {
+                },
+                {
                   path: '/project/requirement/manager',
                   name: 'requirement',
                   icon: 'check-square',
                   component: './project/requirement/index',
-                }, {
+                },
+                {
                   path: '/project/requirement/detail',
                   name: 'requirement.detail',
                   component: './project/requirement/detail',
                   hideInMenu: true,
-                }, {
+                },
+                {
                   path: '/project/requirement/create',
                   name: 'requirement.create',
                   component: './project/requirement/detail',
                   hideInMenu: true,
-                }
+                },
               ],
-            }, {
+            },
+            {
               path: '/user',
               name: 'user',
               icon: 'user',

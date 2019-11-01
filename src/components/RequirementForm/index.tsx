@@ -25,14 +25,14 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
   return (
     <Form {...formItemLayout}>
       <Form.Item label="创建者">
-        {
-          getFieldDecorator('creator', {
-            initialValue: requirement.creator,
-            rules: [{
+        {getFieldDecorator('creator', {
+          initialValue: requirement.creator,
+          rules: [
+            {
               required: true,
-            }],
-          })(<Input/>)
-        }
+            },
+          ],
+        })(<Input />)}
       </Form.Item>
       <Form.Item label="优先级">
         {getFieldDecorator('priority', {
@@ -42,14 +42,15 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
               required: true,
             },
           ],
-        })(<Radio.Group>
-          {
-            Constant.PRIORITY.map((item: ValueText) => (
-                <Radio value={item.value} key={item.value}>{item.text}</Radio>
-              ),
-            )
-          }
-        </Radio.Group>)}
+        })(
+          <Radio.Group>
+            {Constant.PRIORITY.map((item: ValueText) => (
+              <Radio value={item.value} key={item.value}>
+                {item.text}
+              </Radio>
+            ))}
+          </Radio.Group>,
+        )}
       </Form.Item>
       <Form.Item label="类型">
         {getFieldDecorator('type', {
@@ -59,14 +60,15 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
               required: true,
             },
           ],
-        })(<Radio.Group>
-          {
-            Constant.TYPE.map((item: ValueText) => (
-                <Radio value={item.value} key={item.value}>{item.text}</Radio>
-              ),
-            )
-          }
-        </Radio.Group>)}
+        })(
+          <Radio.Group>
+            {Constant.TYPE.map((item: ValueText) => (
+              <Radio value={item.value} key={item.value}>
+                {item.text}
+              </Radio>
+            ))}
+          </Radio.Group>,
+        )}
       </Form.Item>
       <Form.Item label="内容">
         {getFieldDecorator('content', {
@@ -78,7 +80,7 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             },
           ],
           initialValue: requirement.content,
-        })(<Editor onChange={contentChange}/>)}
+        })(<Editor onChange={contentChange} />)}
       </Form.Item>
       <Form.Item label="指派给">
         {getFieldDecorator('assignTo', {
@@ -88,7 +90,7 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             },
           ],
           initialValue: requirement.assignTo,
-        })(<UserSelect/>)}
+        })(<UserSelect />)}
       </Form.Item>
     </Form>
   );

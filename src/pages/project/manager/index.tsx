@@ -17,9 +17,9 @@ interface ProjectState {
   visible: boolean;
 }
 
-@connect((
-  { project, user }: ConnectState) => ({
-  project, user,
+@connect(({ project, user }: ConnectState) => ({
+  project,
+  user,
 }))
 class ProjectManager extends Component<ProjectProps, ProjectState> {
   formRef = null;
@@ -60,7 +60,9 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
   };
 
   render() {
-    const { project: { projects = [] } } = this.props;
+    const {
+      project: { projects = [] },
+    } = this.props;
     const { visible } = this.state;
     const nullData: Partial<Project> = {};
     return (
@@ -74,7 +76,7 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
               if (item && item.id) {
                 return (
                   <List.Item key={item.id}>
-                    <ProjectCard project={item}/>
+                    <ProjectCard project={item} />
                   </List.Item>
                 );
               }
@@ -85,7 +87,7 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
                     className={styles.newButton}
                     onClick={this.handleAddProject}
                   >
-                    <Icon type="plus"/> 新增项目
+                    <Icon type="plus" /> 新增项目
                   </Button>
                   <ProjectApplyModal
                     ref={this.saveFormRef}
@@ -93,7 +95,7 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
                     title="新增项目"
                     onCreate={this.handleOk}
                     onCancel={this.handleCancel}
-                    defaultProject={undefined as unknown as Project}
+                    defaultProject={(undefined as unknown) as Project}
                   />
                 </List.Item>
               );

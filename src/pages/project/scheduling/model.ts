@@ -26,7 +26,7 @@ const SchedulingModel: ModelType = {
     visible: false,
   },
   effects: {
-    * fetch({ payload }, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);
       yield put({
         type: 'queryList',

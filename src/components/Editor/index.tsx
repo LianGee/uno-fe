@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
+import styles from './index.less';
 
 interface EditorProps {
-  onChange: any,
+  onChange: any;
 }
 
 interface EditorState {
-  value: any
+  value: any;
 }
 
 class Editor extends Component<EditorProps, EditorState> {
@@ -45,8 +46,12 @@ class Editor extends Component<EditorProps, EditorState> {
   render() {
     const { value } = this.state;
     return (
-      <div id="editor" defaultValue={value} onChange={this.onChange}>
-      </div>
+      <div
+        id="editor"
+        className={styles.editor}
+        defaultValue={value}
+        onChange={this.onChange}
+      />
     );
   }
 }

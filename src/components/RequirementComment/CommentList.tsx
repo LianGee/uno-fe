@@ -4,10 +4,10 @@ import moment from 'moment';
 import styles from '@/pages/project/requirement/index.less';
 
 interface CommentProps {
-  comments: [],
+  comments: [];
 }
 
-class CommentList extends Component<CommentProps> {
+export default class CommentList extends Component<CommentProps> {
   static defaultProps = {
     comments: [],
   };
@@ -18,33 +18,28 @@ class CommentList extends Component<CommentProps> {
   render() {
     const { comments } = this.props;
     return (
-      comments.length > 0 && <List
-        className={styles.comment}
-        header={`${comments.length} replies`}
-        itemLayout="horizontal"
-        dataSource={comments}
-        renderItem={(item: any) => (
-          <li>
-            <Comment
-              author={item.author.name}
-              avatar={
-                <Avatar
-                  src={item.author.avatar}
-                  alt={item.author.name}
-                />
-              }
-              content={item.content}
-              datetime={
-                <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                  <span>{moment().fromNow()}</span>
-                </Tooltip>
-              }
-            />
-          </li>
-        )}
-      />
+      comments.length > 0 && (
+        <List
+          className={styles.comment}
+          header={`${comments.length} replies`}
+          itemLayout="horizontal"
+          dataSource={comments}
+          renderItem={(item: any) => (
+            <li>
+              <Comment
+                author={item.author.name}
+                avatar={<Avatar src={item.author.avatar} alt={item.author.name}/>}
+                content={item.content}
+                datetime={
+                  <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                    <span>{moment().fromNow()}</span>
+                  </Tooltip>
+                }
+              />
+            </li>
+          )}
+        />
+      )
     );
   }
 }
-
-export default CommentList;

@@ -23,8 +23,7 @@ class ProjectDropdown extends React.Component<GlobalHeaderRightProps, ProjectDro
     };
   }
 
-  componentDidMount(): void {
-  }
+  componentDidMount(): void {}
 
   changeProject = (e: any) => {
     const { project, dispatch } = this.props;
@@ -44,13 +43,9 @@ class ProjectDropdown extends React.Component<GlobalHeaderRightProps, ProjectDro
     const { project } = this.props;
     return (
       <Menu onClick={this.changeProject}>
-        {
-          project.projects.map((item: any) => (
-            <Menu.Item key={item.id}>
-              {item.name}
-            </Menu.Item>
-          ))
-        }
+        {project.projects.map((item: any) => (
+          <Menu.Item key={item.id}>{item.name}</Menu.Item>
+        ))}
       </Menu>
     );
   };
@@ -61,7 +56,8 @@ class ProjectDropdown extends React.Component<GlobalHeaderRightProps, ProjectDro
     return project.projects.length === 0 ? null : (
       <Dropdown overlay={this.renderMenu}>
         <Button type="primary" ghost>
-          <strong>{currentProject.name || project.projects[0].name}</strong><Icon type="down"/>
+          <strong>{currentProject.name || project.projects[0].name}</strong>
+          <Icon type="down" />
         </Button>
       </Dropdown>
     );

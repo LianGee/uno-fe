@@ -16,7 +16,6 @@ export interface Project {
   backendHost: string;
 }
 
-
 export interface ProjectModelState {
   projects?: Project[];
   currentProject: Project;
@@ -43,14 +42,14 @@ const ProjectModel: ProjectModelType = {
     currentProject: {} as Project,
   },
   effects: {
-    * fetch(_, { call, put }) {
+    *fetch(_, { call, put }) {
       const response = yield call(queryAllProject);
       yield put({
         type: 'setProjectList',
         payload: response,
       });
     },
-    * current({ payload }, { put }) {
+    *current({ payload }, { put }) {
       yield put({
         type: 'setCurrentProject',
         payload,

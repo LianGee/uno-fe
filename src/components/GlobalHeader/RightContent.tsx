@@ -23,8 +23,8 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
   return (
     <div className={className}>
       <span className={styles.item}>切换项目</span>
-      <ProjectDropdown/>
-      <Avatar/>
+      <ProjectDropdown />
+      <Avatar />
     </div>
   );
 };

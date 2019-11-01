@@ -31,10 +31,9 @@ class RequirementComment extends Component<RequirementCommentProps, RequirementC
 
   render() {
     const { comments } = this.state;
-    return (
-      <CommentList comments={comments}/>
-    );
+    return <CommentList comments={comments} />;
   }
 }
 
+// @ts-ignore
 export default RequirementComment;
