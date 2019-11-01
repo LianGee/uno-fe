@@ -7,12 +7,13 @@ interface CommentProps {
   comments: [];
 }
 
-class CommentList extends Component<CommentProps> {
+export default class CommentList extends Component<CommentProps> {
   static defaultProps = {
     comments: [],
   };
 
-  componentDidMount(): void {}
+  componentDidMount(): void {
+  }
 
   render() {
     const { comments } = this.props;
@@ -27,7 +28,7 @@ class CommentList extends Component<CommentProps> {
             <li>
               <Comment
                 author={item.author.name}
-                avatar={<Avatar src={item.author.avatar} alt={item.author.name} />}
+                avatar={<Avatar src={item.author.avatar} alt={item.author.name}/>}
                 content={item.content}
                 datetime={
                   <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
@@ -42,5 +43,3 @@ class CommentList extends Component<CommentProps> {
     );
   }
 }
-
-export default CommentList;

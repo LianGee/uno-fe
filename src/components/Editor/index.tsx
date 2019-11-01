@@ -12,7 +12,8 @@ interface EditorState {
 
 class Editor extends Component<EditorProps, EditorState> {
   static defaultProps = {
-    onChange: () => {},
+    onChange: () => {
+    },
   };
 
   constructor(props: any) {
@@ -50,7 +51,7 @@ class Editor extends Component<EditorProps, EditorState> {
         className={styles.editor}
         defaultValue={value}
         onChange={this.onChange}
-      ></div>
+      />
     );
   }
 }

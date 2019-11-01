@@ -35,4 +35,5 @@ class RequirementComment extends Component<RequirementCommentProps, RequirementC
   }
 }
 
+// @ts-ignore
 export default RequirementComment;
