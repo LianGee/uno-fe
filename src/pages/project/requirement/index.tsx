@@ -31,20 +31,20 @@ class RequirementManager extends Component<RequirementManagerProps, RequirementM
     return (
       <PageHeaderWrapper title={false}>
         <Row type="flex" justify="space-between" className={styles.statistic}>
-          <Col span={4} >
+          <Col span={5} >
             <Statistic title="延期需求"
                        prefix={<Icon type="alert"/>}
                        value={112893} valueStyle={{ color: '#cf1322' }}/>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
             <Statistic title="未开始" prefix={<Icon type="api"/>}
                        value={112893}/>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
             <Statistic title="已完成" prefix={<Icon type="carry-out"/>}
                        value={123} suffix="/112893" valueStyle={{ color: '#3fcf51' }}/>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
             <Statistic title="BUG数量" prefix={<Icon type="bug"/>} value={112893}/>
           </Col>
         </Row>

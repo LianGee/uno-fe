@@ -7,6 +7,7 @@ import { Moment } from 'moment';
 import styles from './index.less';
 import SchedulingRequirementList from '@/components/SchedulingRequirementList';
 import SchedulingCreateModal from '@/components/SchedulingCreateModal';
+import ScheduleGantt from '@/components/Gantt';
 
 interface ProjectSchedulingProps {
   project: any;
@@ -54,7 +55,7 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     const listData = scheduling[date] || [];
     const len = listData.length;
     return len === 0 ? (
-      <div className={styles.emptyRequirement}></div>
+      <div className={styles.emptyRequirement}/>
     ) : (
       <ul className={styles.events}>
         {listData.map((item: any) => (
@@ -124,6 +125,9 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     const { visible } = this.state;
     return (
       <PageHeaderWrapper title={false}>
+        <div className={styles.schedulingContent}>
+          <ScheduleGantt/>
+        </div>
         <div className={styles.schedulingContent}>
           <Calendar
             dateCellRender={this.dateCellRender}

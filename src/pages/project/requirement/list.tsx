@@ -112,7 +112,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     const searchResults = [];
     for (let i = 0; i < requirements.length; i += 1) {
       const requirement = requirements[i];
-      if (requirement.title.indexOf(search) > -1 || requirement.assignTo.indexOf(search) > -1){
+      if (requirement.title.indexOf(search) > -1 || requirement.assignTo.indexOf(search) > -1) {
         searchResults.push(requirement);
       }
     }
@@ -149,6 +149,12 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         title: '创建者',
         dataIndex: 'creator',
         key: 'creator',
+        filtered: true,
+        filters: [{
+          value: 'bchen',
+          text: 'bchen',
+        }],
+        onFilter: (value: any, record: any) => record.creator === value,
       },
       {
         title: '指派给',
