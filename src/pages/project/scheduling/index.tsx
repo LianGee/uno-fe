@@ -7,7 +7,6 @@ import { Moment } from 'moment';
 import styles from './index.less';
 import SchedulingRequirementList from '@/components/SchedulingRequirementList';
 import SchedulingCreateModal from '@/components/SchedulingCreateModal';
-import ScheduleGantt from '@/components/Gantt';
 
 interface ProjectSchedulingProps {
   project: any;
@@ -125,9 +124,6 @@ class ProjectScheduling extends Component<ProjectSchedulingProps, ProjectSchedul
     const { visible } = this.state;
     return (
       <PageHeaderWrapper title={false}>
-        <div className={styles.schedulingContent}>
-          <ScheduleGantt/>
-        </div>
         <div className={styles.schedulingContent}>
           <Calendar
             dateCellRender={this.dateCellRender}
