@@ -74,13 +74,19 @@ function fakeList(count: number): Project[] {
 
 function getFakeList(req: Request, res: Response) {
   const params = req.query;
-
   const count = params.count * 1 || 20;
-
   const result = fakeList(count);
   return res.json(result);
 }
 
+
+function getProjectById(req: Request, res: Response) {
+  const params = req.query;
+  const { id } = params;
+  return res.json(fakeList(20).filter(value => value.id == id).pop());
+}
+
 export default {
   'GET  /api/fake_list': getFakeList,
+  'GET /api/project/query': getProjectById,
 };

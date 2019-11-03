@@ -57,7 +57,7 @@ const defaultFooterDom = (
     links={[
       {
         key: 'github',
-        title: <Icon type="github" />,
+        title: <Icon type="github"/>,
         href: 'https://github.com/LianGee/Neptune-fe',
         blankTarget: true,
       },
@@ -73,7 +73,8 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings, user, project } = props;
+  const { dispatch, children, settings, user, project, location } = props;
+  const { query } = location as any;
 
   /**
    * constructor
@@ -89,8 +90,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       dispatch({
         type: 'project/fetch',
       });
+      dispatch({
+        type: 'project/current',
+        payload: { id: query.projectId || 1 },
+      });
     }
   }, []);
+
 
   /**
    * init variables

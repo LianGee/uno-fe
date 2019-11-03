@@ -1,9 +1,12 @@
-import { Form, Input, Radio } from 'antd';
+import { DatePicker, Form, Radio } from 'antd';
 import React from 'react';
+import moment from 'moment';
 import { Constant, ValueText } from '@/constant/requirement';
 import Editor from '@/components/Editor';
 import UserSelect from '@/components/User';
 import { Requirement } from '@/pages/project/requirement/data';
+
+const { RangePicker } = DatePicker;
 
 interface RequirementFormProps {
   form: any;
@@ -24,16 +27,6 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
   };
   return (
     <Form {...formItemLayout}>
-      <Form.Item label="创建者">
-        {getFieldDecorator('creator', {
-          initialValue: requirement.creator,
-          rules: [
-            {
-              required: true,
-            },
-          ],
-        })(<Input />)}
-      </Form.Item>
       <Form.Item label="优先级">
         {getFieldDecorator('priority', {
           initialValue: requirement.priority,
@@ -80,17 +73,24 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             },
           ],
           initialValue: requirement.content,
-        })(<Editor onChange={contentChange} />)}
+        })(<Editor onChange={contentChange}/>)}
       </Form.Item>
       <Form.Item label="指派给">
         {getFieldDecorator('assignTo', {
           rules: [
             {
               required: true,
+              message: '必须指派给相关人员处理',
             },
           ],
           initialValue: requirement.assignTo,
-        })(<UserSelect />)}
+        })(<UserSelect/>)}
+      </Form.Item>
+      <Form.Item label="排期">
+        {getFieldDecorator('scheduling', {
+          initialValue: requirement.start ?
+            [moment(requirement.start), moment(requirement.end)] : [],
+        })(<RangePicker/>)}
       </Form.Item>
     </Form>
   );

@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Button, Card, Col, Mentions, Row, Typography } from 'antd';
+import { connect } from 'dva';
 import styles from './index.less';
 import { Requirement } from '@/pages/project/requirement/data';
 import { queryRequirementById } from '@/pages/project/requirement/service';
 import RequirementForm from '@/components/RequirementForm';
 import RequirementComment from '@/components/RequirementComment';
+import { ConnectState } from '@/models/connect';
 
 const { Paragraph } = Typography;
 const { Option, getMentions } = Mentions;
 
-interface RequirementDetailProps {
+interface RequirementDetailProps extends ConnectState {
   location: any;
   form: any;
+  project: any;
 }
 
 interface RequirementDetailState {
@@ -22,6 +25,10 @@ interface RequirementDetailState {
   comment: any;
 }
 
+@connect(({ project, user }: RequirementDetailProps) => ({
+  project,
+  user,
+}))
 class RequirementDetail extends Component<RequirementDetailProps, RequirementDetailState> {
   formRef: any;
 
@@ -51,6 +58,9 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
         });
       });
     }
+  }
+
+  componentWillReceiveProps(nextProps: any, nextContext: any): void {
   }
 
   onTitleChange = (title: any) => {
@@ -100,7 +110,6 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
 
   onChange = (e: any) => {
     const { requirement } = this.state;
-    console.log(e);
     requirement.assignTo = e.assignTo && e.assignTo.value;
     requirement.creator = e.creator && e.creator.value;
   };
@@ -117,7 +126,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
                 requirement={requirement}
                 onChange={this.onChange}
               />
-              <RequirementComment id={id} />
+              <RequirementComment id={id}/>
               <div className={styles.comment}>
                 <Mentions rows={3} placeholder="使用@圈人" onChange={this.onCommentChange}>
                   <Option value="afc163">afc163</Option>

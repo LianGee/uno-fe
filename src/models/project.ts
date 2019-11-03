@@ -1,6 +1,6 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { queryAllProject } from '@/services/project';
+import { queryAllProject, queryProjectById } from '@/services/project';
 
 export interface Project {
   id: number;
@@ -18,7 +18,7 @@ export interface Project {
 
 export interface ProjectModelState {
   projects?: Project[];
-  currentProject: Project;
+  currentProject?: Project;
 }
 
 export interface ProjectModelType {
@@ -42,17 +42,18 @@ const ProjectModel: ProjectModelType = {
     currentProject: {} as Project,
   },
   effects: {
-    *fetch(_, { call, put }) {
+    * fetch(_, { call, put }) {
       const response = yield call(queryAllProject);
       yield put({
         type: 'setProjectList',
         payload: response,
       });
     },
-    *current({ payload }, { put }) {
+    * current({ payload }, { call, put }) {
+      const response = yield call(queryProjectById, payload.id);
       yield put({
         type: 'setCurrentProject',
-        payload,
+        payload: response,
       });
     },
   },
@@ -62,10 +63,15 @@ const ProjectModel: ProjectModelType = {
       return {
         ...state,
         projects: Array.isArray(action.payload) ? action.payload : [],
-        currentProject: Array.isArray(action.payload) && action.payload ? action.payload[0] : {},
       };
     },
     setCurrentProject(state, action) {
+      if (action.payload.id === undefined) {
+        return {
+          ...state,
+          currentProject: { id: 0 },
+        };
+      }
       return {
         ...state,
         currentProject: action.payload,

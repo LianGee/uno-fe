@@ -4,39 +4,26 @@ import { Button, Dropdown, Icon, Menu } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'redux';
 import { ConnectState } from '@/models/connect';
-import { Project } from '@/models/project';
 
 export interface GlobalHeaderRightProps extends ConnectState {
   project: any;
   dispatch: Dispatch<any>;
 }
 
-export interface ProjectDropdownState {
-  currentProject?: Project;
-}
-
-class ProjectDropdown extends React.Component<GlobalHeaderRightProps, ProjectDropdownState> {
-  constructor(props: GlobalHeaderRightProps) {
-    super(props);
-    this.state = {
-      currentProject: undefined,
-    };
-  }
-
-  componentDidMount(): void {}
-
-  changeProject = (e: any) => {
+class ProjectDropdown extends React.Component<GlobalHeaderRightProps> {
+  setCurrentProject = (projectId: any) => {
     const { project, dispatch } = this.props;
-    const curr = project.projects.filter((item: any) => item.id === Number(e.key)).pop();
-    this.setState({
-      currentProject: curr,
-    });
+    const curr = project.projects.filter((item: any) => item.id === Number(projectId)).pop();
     if (dispatch) {
       dispatch({
         type: 'project/current',
         payload: { ...curr },
       });
     }
+  };
+
+  changeProject = (e: any) => {
+    this.setCurrentProject(e.key);
   };
 
   renderMenu = () => {
@@ -52,15 +39,13 @@ class ProjectDropdown extends React.Component<GlobalHeaderRightProps, ProjectDro
 
   render(): React.ReactNode {
     const { project } = this.props;
-    const { currentProject = { name: '' } } = this.state;
-    return project.projects.length === 0 ? null : (
-      <Dropdown overlay={this.renderMenu}>
-        <Button type="primary" ghost>
-          <strong>{currentProject.name || project.projects[0].name}</strong>
-          <Icon type="down" />
-        </Button>
-      </Dropdown>
-    );
+    const curr = project.currentProject;
+    return <Dropdown overlay={this.renderMenu}>
+      <Button type="primary" ghost>
+        <strong>{curr.name}</strong>
+        <Icon type="down"/>
+      </Button>
+    </Dropdown>;
   }
 }
 

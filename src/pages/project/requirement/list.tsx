@@ -8,6 +8,7 @@ import { Constant } from '@/constant/requirement';
 import { getStatusFlow } from '@/utils/StatusFlow';
 import StatusFlowForm from '@/components/StatusFlowForm';
 import styles from '@/pages/project/requirement/index.less';
+import RequirementDateForm from '@/components/RequirementDateForm';
 
 const { Search } = Input;
 
@@ -23,7 +24,9 @@ interface RequirementListState {
 const color = ['cyan', 'volcano', 'magenta'];
 
 class RequirementList extends Component<RequirementListProps, RequirementListState> {
-  formRef: any;
+  statusFormRef: any;
+
+  dataFormRef: any;
 
   constructor(props: any) {
     super(props);
@@ -53,24 +56,40 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     }
   }
 
-  renderId = (value: any) => (
-    <Link to={`/project/requirement/detail?id=${value}`} target="_blank">
+  renderId = (value: any) => {
+    const { currentProject } = this.props;
+    return <Link
+      to={`/project/requirement/detail?projectId=${currentProject.id}&id=${value}`}
+      target="_blank"
+    >
       #{value}
-    </Link>
-  );
+    </Link>;
+  };
 
   submitStatusFlow = () => {
-    this.formRef.validateFields((err: any, values: any) => {
+    this.statusFormRef.validateFields((err: any, values: any) => {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
-      this.formRef.resetFields();
+      this.statusFormRef.resetFields();
     });
   };
 
-  saveFormRef = (form: any) => {
-    this.formRef = form;
+  submitDate = () => {
+    this.dataFormRef.validateFields((err: any, values: any) => {
+      if (err) {
+        return;
+      }
+      this.dataFormRef.resetFields();
+    });
+  };
+
+  saveStatusFormRef = (form: any) => {
+    this.statusFormRef = form;
+  };
+
+  saveDateFormRef = (form: any) => {
+    this.dataFormRef = form;
   };
 
   renderType = (value: any) => <Tag color={color[value]}>{Constant.TYPE[value].text}</Tag>;
@@ -88,7 +107,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       <Popover content={
         <div>
           <StatusFlowForm
-            ref={this.saveFormRef}
+            ref={this.saveStatusFormRef}
             id={row.id}
             statusFlow={statusFlow}
             onSubmit={this.submitStatusFlow}/>
@@ -119,7 +138,43 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     return searchResults;
   };
 
+  getCreatorFilters = (requirements: Requirement[], search: string) => {
+    const dataSource = this.getSearchData(requirements, search);
+    const filters: any = [];
+    const creators: any = [];
+    dataSource.map((item: any) => {
+      if (creators.indexOf(item.creator)) {
+        creators.push(item.creator);
+      }
+      return null;
+    });
+    creators.map((item: any) => (
+      filters.push({
+        text: item,
+        value: item,
+      })
+    ));
+    return filters;
+  };
+
+  renderDate = (value: string, row: any) => {
+    const { end } = row;
+    return (
+      <Popover content={
+        <RequirementDateForm
+          ref={this.saveDateFormRef} id={row.id}
+          start={value} end={end} onSubmit={this.submitDate}
+        />
+      } title="更改排期" trigger="click">
+        {value} ~ {end}
+      </Popover>
+    );
+  };
+
   render() {
+    const { requirements, search } = this.state;
+    const { currentProject } = this.props;
+    const creatorFilters = this.getCreatorFilters(requirements, search);
     const columns = [
       {
         title: 'ID',
@@ -146,14 +201,17 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         sorter: (a: any, b: any) => a.priority - b.priority,
       },
       {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render: this.renderStatus,
+      },
+      {
         title: '创建者',
         dataIndex: 'creator',
         key: 'creator',
         filtered: true,
-        filters: [{
-          value: 'bchen',
-          text: 'bchen',
-        }],
+        filters: creatorFilters,
         onFilter: (value: any, record: any) => record.creator === value,
       },
       {
@@ -163,21 +221,21 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         render: this.renderAssignTo,
       },
       {
-        title: '状态',
-        dataIndex: 'status',
-        key: 'status',
-        render: this.renderStatus,
+        title: '排期',
+        dataIndex: 'start',
+        key: 'start',
+        render: this.renderDate,
       },
     ];
-    const { requirements, search } = this.state;
     return (
       <>
         <Row>
           <Link
             to={{
-              pathname: '/project/requirement/create',
+              pathname: `/project/requirement/create?projectId=${currentProject.id}`,
             }}
             title="新建需求"
+            target="_blank"
           >
             <Button type="primary" className={styles.newButton}>
               新建需求
