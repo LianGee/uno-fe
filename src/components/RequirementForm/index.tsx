@@ -73,7 +73,7 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             },
           ],
           initialValue: requirement.content,
-        })(<Editor onChange={contentChange}/>)}
+        })(<Editor onChange={contentChange} preview={false}/>)}
       </Form.Item>
       <Form.Item label="指派给">
         {getFieldDecorator('assignTo', {

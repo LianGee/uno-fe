@@ -43,10 +43,11 @@ class Editor extends Component<EditorProps, EditorState> {
     };
     editor.customConfig.menus = EDITOR_MENU;
     editor.create();
-    const toolBar = document.getElementsByClassName('w-e-toolbar').item(0);
+    const toolBar: HTMLElement = document.getElementsByClassName('w-e-toolbar').item(0) as HTMLElement;
     const editIcon = document.getElementById('icon');
     if (toolBar && editIcon) {
       editIcon.style.display = 'block';
+      toolBar.style.backgroundColor = '#fff';
       toolBar.append(editIcon);
     }
   }
@@ -59,7 +60,6 @@ class Editor extends Component<EditorProps, EditorState> {
 
   modeChange = () => {
     const { preview } = this.state;
-    console.log(preview);
     this.setState({
       preview: !preview,
     });
@@ -70,11 +70,10 @@ class Editor extends Component<EditorProps, EditorState> {
     const { preview } = this.state;
     return (
       <>
-        <div id="icon" style={{ display: 'none', marginTop: 5, marginLeft: 5 }}>
+        <div id="icon" style={{ display: 'none', marginLeft: 5 }}>
           <Icon type="fullscreen-exit" onClick={this.modeChange}/>
         </div>
         <div style={{ display: preview ? 'block' : 'none' }}>
-
           <Icon style={{ float: 'right' }} type="edit" onClick={this.modeChange}/>
           {/* eslint-disable-next-line react/no-danger */}
           <div className="w-e-text" dangerouslySetInnerHTML={{ __html: value }}/>

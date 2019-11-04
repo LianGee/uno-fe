@@ -1,11 +1,27 @@
 .editor {
   :global {
+    .w-e-text {
+      overflow-y: hidden;
+    }
+
+    .w-e-text-container {
+      border-radius: 0 0 .4em .4em;
+    }
+
     .w-e-text ul {
       list-style: inside;
     }
 
     .w-e-text ol {
       list-style: decimal;
+    }
+
+    .w-e-toolbar {
+      height: 35px;
+
+      .w-e-menu {
+        padding: 0 10px;
+      }
     }
   }
 }
