@@ -40,7 +40,7 @@ const RegisterRequirementDateForm = (props: StatusFlowFormProps) => {
           ],
         })(<MentionAll rows={2}/>)
       }
-      <Button type="primary" key={id} onClick={onSubmit}>通知并流转</Button>
+      <Button type="primary" key={id} onClick={onSubmit} style={{ float: 'right' }}>通知</Button>
     </Form.Item>
   </Form>;
 };

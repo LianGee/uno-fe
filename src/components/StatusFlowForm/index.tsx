@@ -8,6 +8,8 @@ interface StatusFlowFormProps {
   form: any,
   onSubmit: any,
   id: number,
+  visible?: boolean,
+  onVisibleChange?: any;
 }
 
 const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
@@ -44,7 +46,7 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
           ],
         })(<MentionAll rows={2}/>)
       }
-      <Button type="primary" key={id} onClick={onSubmit}>通知并流转</Button>
+      <Button type="primary" key={id} onClick={onSubmit} style={{ float: 'right' }}>通知并流转</Button>
     </Form.Item>
   </Form>;
 };

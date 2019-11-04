@@ -7,11 +7,10 @@ const { Option } = Mentions;
 interface MentionAllProps {
   placeholder: string;
   rows: number;
-  onChange: any;
+  onChange?: any;
 }
 
 interface MentionAllState {
-  value: string;
   users: [];
 }
 
@@ -26,7 +25,6 @@ class MentionAll extends Component<MentionAllProps, MentionAllState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      value: '',
       users: [],
     };
   }
@@ -41,8 +39,8 @@ class MentionAll extends Component<MentionAllProps, MentionAllState> {
 
   render() {
     const { placeholder, rows, onChange } = this.props;
-    const { value, users } = this.state;
-    return <Mentions defaultValue={value} rows={rows} placeholder={placeholder} onChange={onChange}>
+    const { users } = this.state;
+    return <Mentions rows={rows} placeholder={placeholder} onChange={onChange}>
       {
         users.map((item: any) => (
           <Option key={item.id} value={item.name}>

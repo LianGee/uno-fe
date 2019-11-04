@@ -19,6 +19,8 @@ interface RequirementListProps {
 interface RequirementListState {
   requirements: Requirement[];
   search: string;
+  statusFormVisible: {};
+  dateFormVisible: {};
 }
 
 const color = ['cyan', 'volcano', 'magenta'];
@@ -26,13 +28,15 @@ const color = ['cyan', 'volcano', 'magenta'];
 class RequirementList extends Component<RequirementListProps, RequirementListState> {
   statusFormRef: any;
 
-  dataFormRef: any;
+  dateFormRef: any;
 
   constructor(props: any) {
     super(props);
     this.state = {
       requirements: [],
       search: '',
+      statusFormVisible: {},
+      dateFormVisible: {},
     };
   }
 
@@ -66,21 +70,54 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     </Link>;
   };
 
-  submitStatusFlow = () => {
+  submitStatusFlow = (id: any) => {
     this.statusFormRef.validateFields((err: any, values: any) => {
       if (err) {
         return;
       }
       this.statusFormRef.resetFields();
+      this.statusFormRef.getFieldProps('information').onChange();
+      const { statusFormVisible } = this.state;
+      statusFormVisible[id] = false;
+      this.setState({ statusFormVisible });
     });
   };
 
-  submitDate = () => {
-    this.dataFormRef.validateFields((err: any, values: any) => {
+  submitDate = (id: number) => {
+    this.dateFormRef.validateFields((err: any, values: any) => {
       if (err) {
         return;
       }
-      this.dataFormRef.resetFields();
+      const { dateFormVisible } = this.state;
+      dateFormVisible[id] = {
+        start: false,
+        end: false,
+      };
+      this.dateFormRef.resetFields();
+      this.setState({ dateFormVisible });
+    });
+  };
+
+  handleVisibleChange = (visible: boolean, id: number, type: string) => {
+    const { statusFormVisible, dateFormVisible } = this.state;
+    if (type === 'status') {
+      statusFormVisible[id] = visible;
+    }
+    if (type === 'start') {
+      dateFormVisible[id] = {
+        start: visible,
+        end: false,
+      };
+    }
+    if (type === 'end') {
+      dateFormVisible[id] = {
+        start: false,
+        end: visible,
+      };
+    }
+    this.setState({
+      statusFormVisible,
+      dateFormVisible,
     });
   };
 
@@ -89,7 +126,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
   };
 
   saveDateFormRef = (form: any) => {
-    this.dataFormRef = form;
+    this.dateFormRef = form;
   };
 
   renderType = (value: any) => <Tag color={color[value]}>{Constant.TYPE[value].text}</Tag>;
@@ -103,17 +140,46 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       '#2db7f5', '#f50', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#87d068',
     ];
     const statusFlow = getStatusFlow(value);
+    const { statusFormVisible } = this.state;
+    if (!statusFormVisible.hasOwnProperty(row.id)) {
+      statusFormVisible[row.id] = false;
+    }
     return (
-      <Popover content={
-        <div>
+      <Popover
+        visible={this.state.statusFormVisible[row.id] || false}
+        onVisibleChange={visible => this.handleVisibleChange(visible, row.id, 'status')}
+        content={
           <StatusFlowForm
             ref={this.saveStatusFormRef}
             id={row.id}
             statusFlow={statusFlow}
-            onSubmit={this.submitStatusFlow}/>
-        </div>
-      } title="流转状态" placement="left" trigger="click">
+            onSubmit={() => this.submitStatusFlow(row.id)}/>
+        } title="流转状态" trigger="click">
         <Tag color={statusColor[value]}>{Constant.STATUS[value].text}</Tag>
+      </Popover>
+    );
+  };
+
+  renderDate = (value: any, row: any, type: any) => {
+    const { start, end } = row;
+    const { dateFormVisible } = this.state;
+    if (!dateFormVisible.hasOwnProperty(row.id)) {
+      dateFormVisible[row.id] = {};
+      dateFormVisible[row.id][type] = false;
+    }
+    return (
+      <Popover
+        visible={dateFormVisible[row.id][type]}
+        onVisibleChange={visible => this.handleVisibleChange(visible, row.id, type)}
+        content={
+          <RequirementDateForm
+            ref={this.saveDateFormRef} id={row.id}
+            start={start} end={end} onSubmit={() => this.submitDate(row.id)}
+          />
+        }
+        title="更改排期"
+        trigger="click">
+        {value}
       </Popover>
     );
   };
@@ -155,20 +221,6 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       })
     ));
     return filters;
-  };
-
-  renderDate = (value: string, row: any) => {
-    const { end } = row;
-    return (
-      <Popover content={
-        <RequirementDateForm
-          ref={this.saveDateFormRef} id={row.id}
-          start={value} end={end} onSubmit={this.submitDate}
-        />
-      } title="更改排期" trigger="click">
-        {value} ~ {end}
-      </Popover>
-    );
   };
 
   render() {
@@ -221,10 +273,16 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         render: this.renderAssignTo,
       },
       {
-        title: '排期',
+        title: '开始日期',
         dataIndex: 'start',
         key: 'start',
-        render: this.renderDate,
+        render: (value: any, row: any) => this.renderDate(value, row, 'start'),
+      },
+      {
+        title: '截止日期',
+        dataIndex: 'end',
+        key: 'end',
+        render: (value: any, row: any) => this.renderDate(value, row, 'end'),
       },
     ];
     return (
