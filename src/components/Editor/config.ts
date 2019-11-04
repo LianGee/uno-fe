@@ -4,7 +4,6 @@ export const EDITOR_MENU = [
   'fontSize',
   'fontName',
   'italic',
-  'underline',
   'strikeThrough',
   'foreColor',
   'backColor',

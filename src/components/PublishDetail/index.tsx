@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row } from 'antd';
+import { Row, Form } from 'antd';
 import { Publish } from '@/pages/project/publish/data';
 import styles from './index.less';
 import RequirementList from '@/components/PublishDetail/RequirementList';
@@ -49,8 +49,10 @@ class PublishDetail extends Component<PublishDetailProps, PublishDetailState> {
         <Row style={{ marginTop: 20 }}>
           <strong className={styles.subTitle}>测试结论</strong>
         </Row>
-        <Row>
-          <Editor/>
+        <Row style={{ margin: 20 }}>
+          <Form.Item>
+            <Editor/>
+          </Form.Item>
         </Row>
       </>
     );
