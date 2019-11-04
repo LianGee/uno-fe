@@ -76,7 +76,6 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         return;
       }
       this.statusFormRef.resetFields();
-      this.statusFormRef.getFieldProps('information').onChange();
       const { statusFormVisible } = this.state;
       statusFormVisible[id] = false;
       this.setState({ statusFormVisible });
@@ -209,7 +208,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     const filters: any = [];
     const creators: any = [];
     dataSource.map((item: any) => {
-      if (creators.indexOf(item.creator)) {
+      if (creators.indexOf(item.creator) < 0) {
         creators.push(item.creator);
       }
       return null;
@@ -305,7 +304,11 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
             style={{ width: 200, float: 'right' }}
           />
         </Row>
-        <Table columns={columns} dataSource={this.getSearchData(requirements, search)} rowKey="id"/>
+        <Table
+          columns={columns}
+          dataSource={this.getSearchData(requirements, search)}
+          rowKey="id"
+        />
       </>
     );
   }

@@ -4,9 +4,9 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Card, Col, Icon, Row, Statistic } from 'antd';
 import { ConnectState } from '@/models/connect';
-import RequirementList from '@/pages/project/requirement/list';
 import { Project } from '@/models/project';
 import styles from './index.less';
+import RequirementList from '@/components/RequirementList';
 
 interface RequirementManagerProps extends ConnectState {
   dispatch: Dispatch<any>;

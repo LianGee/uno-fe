@@ -123,16 +123,16 @@ export default {
                   component: './project/manager/index',
                 },
                 {
-                  path: '/project/scheduling',
-                  name: 'scheduling',
-                  icon: 'align-left',
-                  component: './project/scheduling/index',
-                },
-                {
                   path: '/project/requirement/manager',
                   name: 'requirement',
                   icon: 'check-square',
                   component: './project/requirement/index',
+                },
+                {
+                  path: '/project/publish',
+                  name: 'publish',
+                  icon: 'check-square',
+                  component: './project/publish/index',
                 },
                 {
                   path: '/project/requirement/detail',

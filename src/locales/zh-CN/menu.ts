@@ -2,7 +2,7 @@ export default {
   'menu.welcome': '欢迎',
   'menu.project': '项目',
   'menu.project.manager': '项目管理',
-  'menu.project.scheduling': '排期管理',
+  'menu.project.publish': '交付',
   'menu.project.requirement': '需求管理',
   'menu.project.requirement.list': '需求列表',
   'menu.project.requirement.detail': '需求详情',

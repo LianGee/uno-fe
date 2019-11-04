@@ -44,6 +44,7 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
               message: '请填写通知信息',
             },
           ],
+          initialValue: null,
         })(<MentionAll rows={2}/>)
       }
       <Button type="primary" key={id} onClick={onSubmit} style={{ float: 'right' }}>通知并流转</Button>
