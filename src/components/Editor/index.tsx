@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
 import E from 'wangeditor';
+import { Icon } from 'antd';
 import styles from './index.less';
+import { EDITOR_MENU } from './config';
 
 interface EditorProps {
   onChange: any;
+  preview?: boolean;
 }
 
 interface EditorState {
   value: any;
+  preview?: boolean;
 }
 
 class Editor extends Component<EditorProps, EditorState> {
   static defaultProps = {
     onChange: () => {
     },
+    preview: true,
   };
 
   constructor(props: any) {
     super(props);
+    const { preview } = this.props;
     this.state = {
       value: '',
+      preview,
     };
   }
 
@@ -34,7 +41,14 @@ class Editor extends Component<EditorProps, EditorState> {
         value: html,
       });
     };
+    editor.customConfig.menus = EDITOR_MENU;
     editor.create();
+    const toolBar = document.getElementsByClassName('w-e-toolbar').item(0);
+    const editIcon = document.getElementById('icon');
+    if (toolBar && editIcon) {
+      editIcon.style.display = 'block';
+      toolBar.append(editIcon);
+    }
   }
 
   onChange = (html: any) => {
@@ -43,15 +57,36 @@ class Editor extends Component<EditorProps, EditorState> {
     });
   };
 
+  modeChange = () => {
+    const { preview } = this.state;
+    console.log(preview);
+    this.setState({
+      preview: !preview,
+    });
+  };
+
   render() {
     const { value } = this.state;
+    const { preview } = this.state;
     return (
-      <div
-        id="editor"
-        className={styles.editor}
-        defaultValue={value}
-        onChange={this.onChange}
-      />
+      <>
+        <div id="icon" style={{ display: 'none', marginTop: 5, marginLeft: 5 }}>
+          <Icon type="fullscreen-exit" onClick={this.modeChange}/>
+        </div>
+        <div style={{ display: preview ? 'block' : 'none' }}>
+
+          <Icon style={{ float: 'right' }} type="edit" onClick={this.modeChange}/>
+          {/* eslint-disable-next-line react/no-danger */}
+          <div className="w-e-text" dangerouslySetInnerHTML={{ __html: value }}/>
+        </div>
+        <div
+          id="editor"
+          className={styles.editor}
+          defaultValue={value}
+          onChange={this.onChange}
+          style={{ display: preview ? 'none' : 'block' }}
+        />
+      </>
     );
   }
 }
