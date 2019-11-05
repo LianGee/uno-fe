@@ -76,7 +76,7 @@ class Editor extends Component<EditorProps, EditorState> {
         <div style={{ display: preview ? 'block' : 'none' }}>
           <Icon style={{ float: 'right' }} type="edit" onClick={this.modeChange}/>
           {/* eslint-disable-next-line react/no-danger */}
-          <div className="w-e-text" dangerouslySetInnerHTML={{ __html: value }}/>
+          <div className="w-e-text" style={{ overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: value }}/>
         </div>
         <div
           id="editor"
