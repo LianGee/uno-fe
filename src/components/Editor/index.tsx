@@ -42,6 +42,7 @@ class Editor extends Component<EditorProps, EditorState> {
       });
     };
     editor.customConfig.menus = EDITOR_MENU;
+    editor.customConfig.zIndex = 100;
     editor.create();
     const toolBar: HTMLElement = document.getElementsByClassName('w-e-toolbar').item(0) as HTMLElement;
     const editIcon = document.getElementById('icon');

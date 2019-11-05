@@ -9,6 +9,8 @@ const publishes: Publish[] = [
     version: 'v1.0',
     deadline: '2019-11-10',
     status: 1,
+    creator: 'ffan',
+    checker: 'qiushengzhang',
   },
   {
     id: 2,
@@ -17,6 +19,8 @@ const publishes: Publish[] = [
     version: 'v1.1',
     deadline: '2019-11-10',
     status: 0,
+    creator: 'ffan',
+    checker: 'qiushengzhang',
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ const publishes: Publish[] = [
     version: 'v1.2',
     deadline: '2019-11-10',
     status: 2,
+    creator: 'ffan',
+    checker: 'qiushengzhang',
   },
 ];
 
@@ -40,6 +46,18 @@ function getPublishList(req: Request, res: Response) {
   return res.json(result);
 }
 
+function getPublishById(req: Request, res: Response) {
+  const paramms = req.query;
+  for (let i = 0; i < publishes.length; i += 1) {
+    const publish = publishes[i];
+    if (paramms.publishId - publish.id === 0) {
+      return res.json(publish);
+    }
+  }
+  return res.json(undefined);
+}
+
 export default {
   'GET  /publish/list': getPublishList,
+  'GET  /publish/get': getPublishById,
 };

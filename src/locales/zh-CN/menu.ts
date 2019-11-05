@@ -3,6 +3,8 @@ export default {
   'menu.project': '项目',
   'menu.project.manager': '项目管理',
   'menu.project.publish': '交付',
+  'menu.project.publish.manager': '交付管理',
+  'menu.project.publish.create': '新建交付单',
   'menu.project.requirement': '需求管理',
   'menu.project.requirement.list': '需求列表',
   'menu.project.requirement.detail': '需求详情',

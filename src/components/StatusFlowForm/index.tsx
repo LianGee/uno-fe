@@ -2,6 +2,7 @@ import { Button, Form, Radio } from 'antd';
 import React from 'react';
 import MentionAll from '@/components/Mention';
 import { ValueText } from '@/constant/requirement';
+import UserSelect from '@/components/User';
 
 interface StatusFlowFormProps {
   statusFlow: ValueText[],
@@ -33,6 +34,17 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
             ))
           }
         </Radio.Group>)
+      }
+    </Form.Item>
+    <Form.Item label="流转给">
+      {
+        getFieldDecorator('assignTo', {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+        })(<UserSelect/>)
       }
     </Form.Item>
     <Form.Item label="通知相关负责人">

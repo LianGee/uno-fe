@@ -46,6 +46,16 @@ class PublishList extends Component<PublishListProps> {
       key: 'status',
       render: this.renderStatus,
     },
+    {
+      title: '创建人',
+      dataIndex: 'creator',
+      key: 'creator',
+    },
+    {
+      title: '验收',
+      dataIndex: 'checker',
+      key: 'checker',
+    },
   ];
 
   render() {

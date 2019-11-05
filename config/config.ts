@@ -33,11 +33,11 @@ const plugins: IPlugin[] = [
       // },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false,
       // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
@@ -129,10 +129,17 @@ export default {
                   component: './project/requirement/index',
                 },
                 {
-                  path: '/project/publish',
-                  name: 'publish',
-                  icon: 'check-square',
-                  component: './project/publish/index',
+                  path: '/project/publish/manager',
+                  name: 'publish.manager',
+                  icon: 'file-done',
+                  component: './project/publish/manager/index',
+                },
+                {
+                  path: '/project/publish/create',
+                  name: 'publish.create',
+                  icon: 'edit',
+                  component: './project/publish/create/index',
+                  hideInMenu: true,
                 },
                 {
                   path: '/project/requirement/detail',
