@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import { Card } from 'antd';
 import { ConnectState } from '@/models/connect';
 import PublishForm from '@/components/PublishForm';
 import { Publish } from '@/pages/project/publish/data';
-import { Card } from 'antd';
 
 interface PublishCreateProps extends ConnectState {
 }
@@ -32,6 +32,8 @@ class PublishCreate extends Component<PublishCreateProps, PublishCreateState> {
     if (currentProject) {
       // queryPublishById({ projectId: currentProject.id, publishId: });
     }
+    const { publish } = this.state;
+    console.log('publish', publish);
   }
 
   savePublishRef = (inst: any) => {
@@ -39,10 +41,15 @@ class PublishCreate extends Component<PublishCreateProps, PublishCreateState> {
   };
 
   render() {
+    const { project: { currentProject } } = this.props;
     return (
       <PageHeaderWrapper title={false}>
         <Card>
-          <PublishForm ref={this.savePublishRef}/>
+          {
+            currentProject ?
+              <PublishForm ref={this.savePublishRef} projectId={currentProject.id}/>
+              : null
+          }
         </Card>
       </PageHeaderWrapper>
     );

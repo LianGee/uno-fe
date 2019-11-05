@@ -1,40 +1,25 @@
 import React, { Component } from 'react';
 import { DatePicker, Form, Input } from 'antd';
 import { Publish } from '@/pages/project/publish/data';
-import { queryFakeList } from '@/pages/project/requirement/service';
 import Editor from '@/components/Editor';
-import RequirementList from '@/components/PublishForm/RequirementList';
+import RequirementTransfer from '@/components/PublishForm/RequirementTransfer';
 
 
 interface PublishFormProps {
   publish?: Publish;
+  projectId: number;
   form: any;
 }
 
 interface PublishFormState {
-  requirements?: [],
 }
 
 class RegistrationForm extends Component<PublishFormProps, PublishFormState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      requirements: [],
-    };
-  }
-
   componentDidMount(): void {
-    const { publish } = this.props;
-    if (publish) {
-      queryFakeList({ projectId: publish.projectId as number }).then(response => {
-        this.setState({
-          requirements: response,
-        });
-      });
-    }
   }
 
   render() {
+    const { projectId } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -84,7 +69,7 @@ class RegistrationForm extends Component<PublishFormProps, PublishFormState> {
                     required: true,
                   },
                 ],
-              })(<RequirementList/>)
+              })(<RequirementTransfer projectId={projectId}/>)
             }
           </Form.Item>
           <Form.Item label="测试结论">
