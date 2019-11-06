@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export async function query(): Promise<any> {
+export async function queryUsers(): Promise<any> {
   return request('/api/users');
 }
 

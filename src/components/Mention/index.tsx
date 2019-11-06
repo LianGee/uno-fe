@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Mentions } from 'antd';
-import { query } from '@/services/user';
+import { queryUsers } from '@/services/user';
 
 const { Option } = Mentions;
 
@@ -30,7 +30,7 @@ class MentionAll extends Component<MentionAllProps, MentionAllState> {
   }
 
   componentDidMount(): void {
-    query().then(res =>
+    queryUsers().then(res =>
       this.setState({
         users: res,
       }),

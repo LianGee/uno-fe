@@ -80,7 +80,18 @@ class RegistrationForm extends Component<PublishFormProps, PublishFormState> {
                     required: true,
                   },
                 ],
-              })(<Editor preview={false}/>)
+              })(<Editor id={0} preview={false}/>)
+            }
+          </Form.Item>
+          <Form.Item label="验收报告">
+            {
+              getFieldDecorator('checkReport', {
+                rules: [
+                  {
+                    required: true,
+                  },
+                ],
+              })(<Editor id={1} preview={false}/>)
             }
           </Form.Item>
         </Form>

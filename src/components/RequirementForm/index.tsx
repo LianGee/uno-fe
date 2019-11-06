@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { Constant, ValueText } from '@/constant/requirement';
 import Editor from '@/components/Editor';
-import UserSelect from '@/components/User';
+import UserSelect from '@/components/UserSelect';
 import { Requirement } from '@/pages/project/requirement/data';
 
 const { RangePicker } = DatePicker;

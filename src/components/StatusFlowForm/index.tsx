@@ -2,7 +2,7 @@ import { Button, Form, Radio } from 'antd';
 import React from 'react';
 import MentionAll from '@/components/Mention';
 import { ValueText } from '@/constant/requirement';
-import UserSelect from '@/components/User';
+import UserSelect from '@/components/UserSelect';
 
 interface StatusFlowFormProps {
   statusFlow: ValueText[],

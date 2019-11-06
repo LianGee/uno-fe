@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 function getFakeCaptcha(req: Request, res: Response) {
   return res.json('captcha-xxx');
 }
+
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
@@ -61,44 +62,50 @@ export default {
     {
       key: '1',
       id: '1',
-      name: '林东东',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      name: 'ddlin',
+      chineseName: '林东东',
+      email: 'ddlin@sse.com.cn',
+      active: 1,
     },
     {
       key: '2',
       id: '2',
-      name: '吴加好',
-      age: 42,
-      address: 'London No. 1 Lake Park',
+      name: 'jhwu',
+      chineseName: '吴加好',
+      email: 'jhwu@sse.com.cn',
+      active: 1,
     },
     {
       key: '3',
       id: '3',
-      name: '曲丽丽',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      name: 'llqu',
+      chineseName: '曲丽丽',
+      email: 'llqu@sse.com.cn',
+      active: 1,
     },
     {
       key: '4',
       id: '4',
-      name: '周星星',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      name: 'xxzhou',
+      chineseName: '周星星',
+      email: 'xxzhou@sse.com.cn',
+      active: 1,
     },
     {
       key: '5',
       id: '5',
-      name: '付小小',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      name: 'xxfu',
+      chineseName: '付小小',
+      email: 'xxfu@sse.com.cn',
+      active: 1,
     },
     {
       key: '6',
       id: '6',
-      name: '朱偏右',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      name: 'pyzhu',
+      chineseName: '朱偏右',
+      email: 'pyzhu@sse.com.cn',
+      active: 1,
     },
   ],
   'POST /api/login/account': (req: Request, res: Response) => {

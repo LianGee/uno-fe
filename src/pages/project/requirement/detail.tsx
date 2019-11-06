@@ -60,9 +60,6 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     }
   }
 
-  componentWillReceiveProps(nextProps: any, nextContext: any): void {
-  }
-
   onTitleChange = (title: any) => {
     console.log(title);
     return title;

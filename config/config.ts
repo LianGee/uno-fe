@@ -88,13 +88,24 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
-      path: '/user',
+      path: '/user/login',
       component: '../layouts/UserLayout',
       routes: [
         {
           name: 'login',
           path: '/user/login',
           component: './user/login',
+        },
+      ],
+    },
+    {
+      path: '/user/register',
+      component: '../layouts/UserLayout',
+      routes: [
+        {
+          name: 'register',
+          path: '/user/register',
+          component: './user/register',
         },
       ],
     },
@@ -164,7 +175,7 @@ export default {
                   path: '/user/manager',
                   name: 'manager',
                   icon: 'appstore',
-                  component: './user/manager/index',
+                  component: './user/manager',
                 },
               ],
             },

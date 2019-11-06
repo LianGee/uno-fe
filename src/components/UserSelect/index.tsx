@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
-import { query } from '@/services/user';
+import { queryUsers } from '@/services/user';
 import { CurrentUser } from '@/models/user';
 
 const { Option } = Select;
@@ -31,7 +31,7 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
   }
 
   componentDidMount(): void {
-    query().then(res =>
+    queryUsers().then(res =>
       this.setState({
         users: res,
       }),

@@ -4,7 +4,7 @@ import ProjectPrioritySelect from '@/components/ProjectApplyModal/ProjectPriorit
 import ProjectTypeSelect from '@/components/ProjectApplyModal/ProjectTypeSelect';
 import ProjectLanguageSelect from '@/components/ProjectApplyModal/ProjectLanguageSelect';
 import ProjectBusinessSelect from '@/components/ProjectApplyModal/ProjectBusinessSelect';
-import UserSelect from '@/components/User';
+import UserSelect from '@/components/UserSelect';
 import { ProjectConstant } from '@/constant/project';
 import { Project } from '@/models/project';
 
