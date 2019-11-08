@@ -20,7 +20,7 @@ class UserList extends Component<UserListProps, UserListState> {
   componentDidMount(): void {
     queryUsers().then(res =>
       this.setState({
-        users: res,
+        users: res.data,
       }),
     );
   }

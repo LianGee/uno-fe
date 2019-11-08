@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export async function queryUsers(): Promise<any> {
-  return request('/api/users');
+  return request('/apis/user/getAll');
 }
 
 export async function queryCurrent(): Promise<any> {

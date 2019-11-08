@@ -15,7 +15,7 @@ interface UserManagerProps extends ConnectState {
 class UserManager extends Component<UserManagerProps> {
   render() {
     return (
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title={false}>
         <Card>
           <UserList/>
         </Card>
