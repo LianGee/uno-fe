@@ -5,10 +5,11 @@ import { queryAllProject, queryProjectById } from '@/services/project';
 export interface Project {
   id: number;
   name: string;
-  business: number;
-  priority: number;
+  businessId: number;
+  business: any;
+  level: number;
   type: number;
-  language: number[];
+  language: string[];
   owner: string[];
   logo: string;
   description: string;
@@ -46,7 +47,7 @@ const ProjectModel: ProjectModelType = {
       const response = yield call(queryAllProject);
       yield put({
         type: 'setProjectList',
-        payload: response,
+        payload: response.data,
       });
     },
     * current({ payload }, { call, put }) {

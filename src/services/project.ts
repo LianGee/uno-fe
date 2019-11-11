@@ -1,8 +1,7 @@
 import request from '@/utils/request';
 
 export async function queryAllProject() {
-  const params: { count: number } = { count: 8 };
-  return request('/api/fake_list', { params });
+  return request('/apis/project/query/all');
 }
 
 export async function queryProjectById(id: number) {

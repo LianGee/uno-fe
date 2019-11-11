@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, Form, Icon, Tag, Typography } from 'antd';
+import { Card, Form, Icon, notification, Tag, Typography } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import styles from './index.less';
 import { priority, type } from '@/constant/project';
 import { Project } from '@/models/project';
 import ProjectApplyModal from '@/components/ProjectApplyModal';
+import { save } from '@/pages/project/manager/service';
 
 const { Paragraph } = Typography;
 
@@ -34,8 +35,14 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', values);
+      const { currentProject } = this.state;
+      save({ ...values, id: currentProject.id }).then(response => {
+        if (response.status !== 0) {
+          notification.error({ message: response.msg });
+        } else {
+          notification.success({ message: '更新成功' });
+        }
+      });
       this.formRef.resetFields();
       this.setState({ visible: false });
     });
@@ -61,6 +68,7 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
 
   render() {
     const { project } = this.props;
+    console.log(project);
     const color = ['geekblue', 'volcano', 'magenta'];
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -74,19 +82,21 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
           hoverable
           className={styles.card}
           actions={[
-            <Icon type="edit" key="edit" onClick={this.onCardEdit} />,
+            <Icon type="edit" key="edit" onClick={this.onCardEdit}/>,
             <a href="https://ant.design/components/icon-cn/" target="blank">
-              <Icon type="arrow-right" />
+              <Icon type="arrow-right"/>
             </a>,
           ]}
         >
           <Card.Meta
             title={<a>{project.name}</a>}
-            avatar={<img alt="" className={styles.cardLogo} src={project.logo} />}
+            avatar={<img alt="" className={styles.cardLogo} src={project.logo}/>}
             description={
               <section>
-                <Tag color="cyan">{project.business}</Tag>
-                <Tag color={color[project.priority || 0]}>{priority[project.priority || 0]}</Tag>
+                {
+                  project.business ? <Tag color="cyan">{project.business.chineseName}</Tag> : null
+                }
+                <Tag color={color[project.level || 0]}>{priority[project.level || 0]}</Tag>
                 <Tag>{type[project.type || 0]}</Tag>
                 {project.language !== undefined
                   ? project.language.map(item => <Tag key={item}>{item}</Tag>)

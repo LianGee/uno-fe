@@ -8,6 +8,7 @@ import styles from './index.less';
 import ProjectApplyModal from '@/components/ProjectApplyModal';
 import { ConnectState } from '@/models/connect';
 import { Project } from '@/models/project';
+import { save } from '@/pages/project/manager/service';
 
 interface ProjectProps extends ConnectState {
   dispatch: Dispatch<any>;
@@ -22,7 +23,7 @@ interface ProjectState {
   user,
 }))
 class ProjectManager extends Component<ProjectProps, ProjectState> {
-  formRef = null;
+  formRef: any;
 
   constructor(props: any) {
     super(props);
@@ -47,8 +48,14 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
     this.openAddProjectModal();
   };
 
-  handleOk = (project: Project) => {
-    console.log('manager index', project);
+  handleOk = () => {
+    this.formRef.validateFields((err: any, values: any) => {
+      if (!err) {
+        save(values).then(response => {
+          console.log(response);
+        });
+      }
+    });
   };
 
   handleCancel = () => {
@@ -76,7 +83,7 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
               if (item && item.id) {
                 return (
                   <List.Item key={item.id}>
-                    <ProjectCard project={item} />
+                    <ProjectCard project={item}/>
                   </List.Item>
                 );
               }
@@ -87,7 +94,7 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
                     className={styles.newButton}
                     onClick={this.handleAddProject}
                   >
-                    <Icon type="plus" /> 新增项目
+                    <Icon type="plus"/> 新增项目
                   </Button>
                   <ProjectApplyModal
                     ref={this.saveFormRef}

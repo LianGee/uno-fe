@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Transfer } from 'antd';
+import { Link } from 'umi';
 import { queryFakeList } from '@/pages/project/requirement/service';
 import { Requirement } from '@/pages/project/requirement/data';
-import { Link } from 'umi';
 
 interface RequirementTransferProps {
   projectId: number;

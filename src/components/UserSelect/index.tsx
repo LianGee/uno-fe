@@ -33,7 +33,7 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
   componentDidMount(): void {
     queryUsers().then(res =>
       this.setState({
-        users: res,
+        users: res.data,
       }),
     );
   }

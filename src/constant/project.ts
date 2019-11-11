@@ -13,7 +13,7 @@ export const type = {
 };
 
 interface ProjectConstant {
-  PRIORITY: ValueText[];
+  LEVEL: ValueText[];
   LANGUAGE: ValueText[];
   TYPE: ValueText[];
 }
@@ -45,7 +45,7 @@ export const ProjectConstant: ProjectConstant = {
       text: 'TypeScript',
     },
   ],
-  PRIORITY: [
+  LEVEL: [
     {
       value: 0,
       text: '一般',
