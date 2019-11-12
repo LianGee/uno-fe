@@ -25,6 +25,7 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
   };
+  console.log(window.location);
   return (
     <Form {...formItemLayout}>
       <Form.Item label="优先级">
@@ -73,7 +74,7 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             },
           ],
           initialValue: requirement.content,
-        })(<Editor onChange={contentChange} preview={false}/>)}
+        })(<Editor onChange={contentChange} preview={window.location.href.indexOf('/requirement/detail') > -1}/>)}
       </Form.Item>
       <Form.Item label="指派给">
         {getFieldDecorator('assignTo', {

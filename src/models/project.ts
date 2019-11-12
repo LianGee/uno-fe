@@ -54,7 +54,7 @@ const ProjectModel: ProjectModelType = {
       const response = yield call(queryProjectById, payload.id);
       yield put({
         type: 'setCurrentProject',
-        payload: response,
+        payload: response.data,
       });
     },
   },

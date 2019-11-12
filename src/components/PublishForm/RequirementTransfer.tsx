@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Transfer } from 'antd';
 import { Link } from 'umi';
-import { queryFakeList } from '@/pages/project/requirement/service';
+import { queryRequirementByProjectId } from '@/pages/project/requirement/service';
 import { Requirement } from '@/pages/project/requirement/data';
 
 interface RequirementTransferProps {
@@ -49,9 +49,9 @@ class RequirementTransfer extends Component<RequirementTransferProps, Requiremen
 
   getData = (projectId: number) => {
     const data: any = [];
-    queryFakeList({ projectId }).then(response => {
+    queryRequirementByProjectId({ projectId }).then(response => {
       // eslint-disable-next-line array-callback-return
-      response.map((item: Requirement) => {
+      response.data.map((item: Requirement) => {
         data.push({
           key: item.id,
           title: item.title,

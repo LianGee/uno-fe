@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Card, Col, Mentions, Row, Typography } from 'antd';
+import { Button, Card, Col, Mentions, notification, Row, Typography } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
 import { Requirement } from '@/pages/project/requirement/data';
-import { queryRequirementById } from '@/pages/project/requirement/service';
+import { queryRequirementById, save } from '@/pages/project/requirement/service';
 import RequirementForm from '@/components/RequirementForm';
 import RequirementComment from '@/components/RequirementComment';
 import { ConnectState } from '@/models/connect';
+import { TIME_FORMAT } from '@/constant/global';
 
 const { Paragraph } = Typography;
 const { Option, getMentions } = Mentions;
@@ -42,26 +43,30 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     };
   }
 
-  componentDidMount(): void {
-    const { location } = this.props;
+  componentWillReceiveProps(nextProps: any): void {
+    const { location } = nextProps;
     const { query } = location;
     if (location.pathname === '/project/requirement/create') {
       this.setState({
         isCreate: true,
       });
-    }
-    if (query.id) {
-      queryRequirementById(query.id).then(response => {
-        this.setState({
-          requirement: response,
-          id: query.id,
+      if (query.id) {
+        queryRequirementById(query.id).then(response => {
+          this.setState({
+            requirement: response.data,
+            id: query.id,
+          });
         });
-      });
+      }
     }
   }
 
   onTitleChange = (title: any) => {
-    console.log(title);
+    const { requirement } = this.state;
+    requirement.title = title;
+    this.setState({
+      requirement,
+    });
     return title;
   };
 
@@ -88,14 +93,31 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
   };
 
   onSubmit = () => {
-    const { comment, requirement } = this.state;
-    console.log(this.state, getMentions(comment), requirement);
+    const { project, user } = this.props;
     this.formRef.validateFields((err: any, values: any) => {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
-      this.formRef.resetFields();
+      const { scheduling } = values;
+      const createRequirement = {
+        title: this.state.requirement.title,
+        projectId: project.currentProject.id,
+        priority: values.priority,
+        type: values.type,
+        content: values.content,
+        assignTo: values.assignTo,
+        start: scheduling[0].format(TIME_FORMAT),
+        end: scheduling[1].format(TIME_FORMAT),
+        creator: user.currentUser ? user.currentUser.name : undefined,
+        status: this.state.requirement.status,
+      };
+      save(createRequirement).then(response => {
+        if (response.status !== 0) {
+          notification.info({ message: response.msg });
+        } else {
+          notification.success({ message: '添加成功' });
+        }
+      });
     });
   };
 

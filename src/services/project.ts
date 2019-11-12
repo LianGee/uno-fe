@@ -5,6 +5,5 @@ export async function queryAllProject() {
 }
 
 export async function queryProjectById(id: number) {
-  const params: { id: number } = { id };
-  return request('/api/project/query', { params });
+  return request(`/apis/project/query/${id}`);
 }

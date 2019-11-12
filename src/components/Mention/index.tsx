@@ -32,7 +32,7 @@ class MentionAll extends Component<MentionAllProps, MentionAllState> {
   componentDidMount(): void {
     queryUsers().then(res =>
       this.setState({
-        users: res,
+        users: res.data,
       }),
     );
   }

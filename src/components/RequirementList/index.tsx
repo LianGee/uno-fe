@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Popover, Row, Table, Tag } from 'antd';
 import Link from 'umi/link';
 import { Project } from '@/models/project';
-import { queryFakeList } from '@/pages/project/requirement/service';
+import { queryRequirementByProjectId } from '@/pages/project/requirement/service';
 import { Requirement } from '@/pages/project/requirement/data';
 import { Constant } from '@/constant/requirement';
 import { getStatusFlow } from '@/utils/StatusFlow';
@@ -40,11 +40,11 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     };
   }
 
-  componentDidMount(): void {
-    const { currentProject } = this.props;
-    queryFakeList({ projectId: currentProject.id }).then(response => {
+  componentWillReceiveProps(nextProps: any): void {
+    const { currentProject } = nextProps;
+    queryRequirementByProjectId({ projectId: currentProject.id }).then(response => {
       this.setState({
-        requirements: response,
+        requirements: response.data,
       });
     });
   }
@@ -52,9 +52,9 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
   componentWillUpdate(nextProps: Readonly<RequirementListProps>): void {
     if (nextProps !== this.props) {
       const { currentProject } = nextProps;
-      queryFakeList({ projectId: currentProject.id }).then(response => {
+      queryRequirementByProjectId({ projectId: currentProject.id }).then(response => {
         this.setState({
-          requirements: response,
+          requirements: response.data,
         });
       });
     }
