@@ -49,7 +49,7 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
     </Form.Item>
     <Form.Item label="通知相关负责人">
       {
-        getFieldDecorator('information', {
+        getFieldDecorator('content', {
           rules: [
             {
               required: true,

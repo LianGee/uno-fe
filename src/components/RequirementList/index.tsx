@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { Button, Input, Popover, Row, Table, Tag } from 'antd';
+import { Button, Input, Mentions, notification, Popover, Row, Table, Tag } from 'antd';
 import Link from 'umi/link';
 import { Project } from '@/models/project';
-import { queryRequirementByProjectId } from '@/pages/project/requirement/service';
+import { queryRequirementByProjectId, statusFlowApi, updateDateApi } from '@/pages/project/requirement/service';
 import { Requirement } from '@/pages/project/requirement/data';
 import { Constant } from '@/constant/requirement';
 import { getStatusFlow } from '@/utils/StatusFlow';
 import StatusFlowForm from '@/components/StatusFlowForm';
 import styles from '@/pages/project/requirement/index.less';
 import RequirementDateForm from '@/components/RequirementDateForm';
+import { TIME_FORMAT } from '@/constant/global';
+
+const { getMentions } = Mentions;
 
 const { Search } = Input;
 
@@ -75,10 +78,21 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       if (err) {
         return;
       }
-      this.statusFormRef.resetFields();
-      const { statusFormVisible } = this.state;
-      statusFormVisible[id] = false;
-      this.setState({ statusFormVisible });
+      const statusFlow = {
+        id,
+        ...values,
+        mentions: getMentions(values.content).map((item: any) => item.value),
+      };
+      statusFlowApi(statusFlow).then(response => {
+        if (response.status === 0) {
+          notification.success({ message: '状态流转成功' });
+          const { statusFormVisible } = this.state;
+          statusFormVisible[id] = false;
+          this.setState({ statusFormVisible });
+        } else {
+          notification.error({ message: response.msg });
+        }
+      });
     });
   };
 
@@ -87,13 +101,27 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       if (err) {
         return;
       }
-      const { dateFormVisible } = this.state;
-      dateFormVisible[id] = {
-        start: false,
-        end: false,
+      const updateDate = {
+        id,
+        start: values.scheduling[0].format(TIME_FORMAT),
+        end: values.scheduling[1].format(TIME_FORMAT),
+        mentions: getMentions(values.content).map((item: any) => item.value),
+        content: values.content,
       };
-      this.dateFormRef.resetFields();
-      this.setState({ dateFormVisible });
+      updateDateApi(updateDate).then(response => {
+        if (response.status === 0) {
+          notification.success({ message: '更新日期成功' });
+          const { dateFormVisible } = this.state;
+          dateFormVisible[id] = {
+            start: false,
+            end: false,
+          };
+          this.dateFormRef.resetFields();
+          this.setState({ dateFormVisible });
+        } else {
+          notification.error({ message: response.msg });
+        }
+      });
     });
   };
 

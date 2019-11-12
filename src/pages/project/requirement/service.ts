@@ -24,3 +24,17 @@ export async function save(params: any) {
 export async function statistic(projectId: number) {
   return request(`/apis/requirement/statistic?projectId=${projectId}`);
 }
+
+export async function statusFlowApi(params: any) {
+  return request('/apis/requirement/status/flow', {
+    body: JSON.stringify(params),
+    method: 'POST',
+  });
+}
+
+export async function updateDateApi(params: any) {
+  return request('/apis/requirement/update/date', {
+    body: JSON.stringify(params),
+    method: 'POST',
+  });
+}

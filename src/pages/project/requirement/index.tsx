@@ -29,8 +29,8 @@ class RequirementManager extends Component<RequirementManagerProps, RequirementM
     };
   }
 
-  componentWillReceiveProps(nextProps: any): void {
-    const { project: { currentProject } } = nextProps;
+  componentDidMount(): void {
+    const { project: { currentProject } } = this.props;
     console.log(currentProject);
     if (currentProject && currentProject.hasOwnProperty('id')) {
       statistic(currentProject.id).then(response => {

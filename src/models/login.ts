@@ -3,10 +3,10 @@ import { routerRedux } from 'dva/router';
 import { Effect } from 'dva';
 import { stringify } from 'querystring';
 
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import { notification } from 'antd';
+import { getFakeCaptcha, login } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { notification } from 'antd';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -36,16 +36,21 @@ const Model: LoginModelType = {
 
   effects: {
     * login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(login, payload);
       if (response.status !== 0) {
         notification.error({ message: response.msg });
       }
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          ...response,
+          currentAuthority: 'user',
+        },
       });
       // Login successfully
       if (response.status === 0) {
+        sessionStorage.clear();
+        sessionStorage.setItem('user', JSON.stringify(response.data));
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -87,9 +92,10 @@ const Model: LoginModelType = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+      console.log(state, payload);
       return {
         ...state,
-        status: payload.status,
+        status: payload.status === 0 ? 'ok' : 'error',
         type: payload.type,
       };
     },
