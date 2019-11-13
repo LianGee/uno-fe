@@ -47,11 +47,11 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
           notification.error({ message: response.msg });
         } else {
           notification.success({ message: '更新成功' });
+          this.setState({ visible: false });
           window.location.reload();
         }
       });
       this.formRef.resetFields();
-      this.setState({ visible: false });
     });
   };
 

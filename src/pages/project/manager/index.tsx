@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Icon, List } from 'antd';
+import { Button, Icon, List, notification } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProjectCard from '@/components/ProjectCard';
 import styles from './index.less';
@@ -52,7 +52,12 @@ class ProjectManager extends Component<ProjectProps, ProjectState> {
     this.formRef.validateFields((err: any, values: any) => {
       if (!err) {
         save(values).then(response => {
-          console.log(response);
+          if (response.status === 0) {
+            notification.success({ message: '添加成功' });
+            this.closeAddProjectModal();
+          } else {
+            notification.error({ message: response.status });
+          }
         });
       }
     });

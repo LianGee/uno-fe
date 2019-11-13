@@ -6,7 +6,7 @@ export interface Project {
   id: number;
   name: string;
   businessId: number;
-  business: any;
+  business?: any;
   level: number;
   type: number;
   language: string[];
