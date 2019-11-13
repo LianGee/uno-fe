@@ -11,7 +11,7 @@ export async function queryRequirementById(id: number) {
 }
 
 export async function queryRequirementComments(id: number) {
-  return request(`/requirement/comments?id=${id}`);
+  return request(`/apis/requirement/query/comments?id=${id}`);
 }
 
 export async function save(params: any) {

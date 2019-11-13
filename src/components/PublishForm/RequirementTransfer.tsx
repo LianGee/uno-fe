@@ -30,7 +30,7 @@ class RequirementTransfer extends Component<RequirementTransferProps, Requiremen
   }
 
   componentWillReceiveProps(nextProps: Readonly<RequirementTransferProps>): void {
-    if (nextProps !== this.props) {
+    if (nextProps.projectId !== this.props.projectId) {
       this.getData(nextProps.projectId);
     }
   }

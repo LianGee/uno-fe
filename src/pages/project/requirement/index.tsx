@@ -30,8 +30,17 @@ class RequirementManager extends Component<RequirementManagerProps, RequirementM
   }
 
   componentDidMount(): void {
-    const { project: { currentProject } } = this.props;
-    console.log(currentProject);
+    this.initData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps: any): void {
+    if (this.props.project !== nextProps.project) {
+      this.initData(nextProps);
+    }
+  }
+
+  initData = (props: any) => {
+    const { project: { currentProject } } = props;
     if (currentProject && currentProject.hasOwnProperty('id')) {
       statistic(currentProject.id).then(response => {
         this.setState({
@@ -39,7 +48,7 @@ class RequirementManager extends Component<RequirementManagerProps, RequirementM
         });
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -54,7 +63,7 @@ class RequirementManager extends Component<RequirementManagerProps, RequirementM
               <Col span={5}>
                 <Statistic title="延期需求"
                            prefix={<Icon type="alert"/>}
-                           value={statistics.delayed} valueStyle={{ color: '#cf1322' }}/>
+                           value={statistics.delay} valueStyle={{ color: '#cf1322' }}/>
               </Col>
               <Col span={5}>
                 <Statistic title="未开始" prefix={<Icon type="api"/>}

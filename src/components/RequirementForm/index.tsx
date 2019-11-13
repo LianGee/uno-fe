@@ -25,7 +25,6 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
   };
-  console.log(window.location);
   return (
     <Form {...formItemLayout}>
       <Form.Item label="优先级">

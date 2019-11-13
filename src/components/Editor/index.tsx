@@ -7,7 +7,7 @@ import { EDITOR_MENU } from './config';
 interface EditorProps {
   onChange: any;
   preview?: boolean;
-  id?: number;
+  id?: any;
   value?: any;
 }
 
@@ -86,7 +86,7 @@ class Editor extends Component<EditorProps, EditorState> {
           <Icon style={{ float: 'right' }} type="edit" onClick={this.modeChange}/>
           <div
             id={`content${id}`}
-            className="w-e-text" style={{ overflow: 'hidden' }}
+            className={styles.editor} style={{ overflow: 'hidden' }}
             dangerouslySetInnerHTML={{ __html: value }}
           />
         </div>

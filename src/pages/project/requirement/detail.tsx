@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Card, Col, Mentions, notification, Row, Typography } from 'antd';
+import { Button, Card, Col, Form, Mentions, notification, Row, Typography } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
 import { Requirement } from '@/pages/project/requirement/data';
@@ -9,9 +9,10 @@ import RequirementForm from '@/components/RequirementForm';
 import RequirementComment from '@/components/RequirementComment';
 import { ConnectState } from '@/models/connect';
 import { TIME_FORMAT } from '@/constant/global';
+import MentionAll from '@/components/Mention';
 
 const { Paragraph } = Typography;
-const { Option, getMentions } = Mentions;
+const { Option } = Mentions;
 
 interface RequirementDetailProps extends ConnectState {
   location: any;
@@ -38,26 +39,26 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     this.state = {
       requirement: {} as Requirement,
       isCreate: false,
-      id: 0,
-      comment: '',
+      id: undefined as unknown as number,
+      comment: [],
     };
   }
 
-  componentWillReceiveProps(nextProps: any): void {
-    const { location } = nextProps;
+  componentDidMount(): void {
+    const { location } = this.props;
     const { query } = location;
     if (location.pathname === '/project/requirement/create') {
       this.setState({
         isCreate: true,
       });
-      if (query.id) {
-        queryRequirementById(query.id).then(response => {
-          this.setState({
-            requirement: response.data,
-            id: query.id,
-          });
+    }
+    if (query.id) {
+      queryRequirementById(query.id).then(response => {
+        this.setState({
+          requirement: response.data,
+          id: query.id,
         });
-      }
+      });
     }
   }
 
@@ -100,6 +101,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
       }
       const { scheduling } = values;
       const createRequirement = {
+        id: this.state.id,
         title: this.state.requirement.title,
         projectId: project.currentProject.id,
         priority: values.priority,
@@ -115,7 +117,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
         if (response.status !== 0) {
           notification.info({ message: response.msg });
         } else {
-          notification.success({ message: '添加成功' });
+          notification.success({ message: '成功' });
         }
       });
     });
@@ -135,6 +137,19 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
 
   render() {
     const { requirement, isCreate, id } = this.state;
+    const formLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 4,
+        },
+      },
+    };
     return (
       <PageHeaderWrapper title={false}>
         <Card title={this.renderTitle()} className={styles.card}>
@@ -145,17 +160,19 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
                 requirement={requirement}
                 onChange={this.onChange}
               />
-              <RequirementComment id={id}/>
-              <div className={styles.comment}>
-                <Mentions rows={3} placeholder="使用@圈人" onChange={this.onCommentChange}>
-                  <Option value="afc163">afc163</Option>
-                  <Option value="zombieJ">zombieJ</Option>
-                  <Option value="yesmeck">yesmeck</Option>
-                </Mentions>
-                <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
-                  提交
-                </Button>
-              </div>
+              <Form {...formLayout}>
+                <Form.Item {...tailFormItemLayout}>
+                  <RequirementComment id={id}/>
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <MentionAll rows={3} onChange={this.onCommentChange}/>
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
+                    提交
+                  </Button>
+                </Form.Item>
+              </Form>
             </>
           )}
         </Card>

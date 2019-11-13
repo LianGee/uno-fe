@@ -26,7 +26,7 @@ interface RequirementListState {
   dateFormVisible: {};
 }
 
-const color = ['cyan', 'volcano', 'magenta'];
+const color = ['cyan', 'green', 'magenta'];
 
 class RequirementList extends Component<RequirementListProps, RequirementListState> {
   statusFormRef: any;
@@ -43,25 +43,24 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
     };
   }
 
-  componentWillReceiveProps(nextProps: any): void {
-    const { currentProject } = nextProps;
+  componentDidMount(): void {
+    this.initData(this.props);
+  }
+
+  componentWillUpdate(nextProps: Readonly<RequirementListProps>): void {
+    if (nextProps.currentProject !== this.props.currentProject) {
+      this.initData(nextProps);
+    }
+  }
+
+  initData = (props: any) => {
+    const { currentProject } = props;
     queryRequirementByProjectId({ projectId: currentProject.id }).then(response => {
       this.setState({
         requirements: response.data,
       });
     });
-  }
-
-  componentWillUpdate(nextProps: Readonly<RequirementListProps>): void {
-    if (nextProps !== this.props) {
-      const { currentProject } = nextProps;
-      queryRequirementByProjectId({ projectId: currentProject.id }).then(response => {
-        this.setState({
-          requirements: response.data,
-        });
-      });
-    }
-  }
+  };
 
   renderId = (value: any) => {
     const { currentProject } = this.props;
@@ -81,7 +80,8 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       const statusFlow = {
         id,
         ...values,
-        mentions: getMentions(values.content).map((item: any) => item.value),
+        mentions: values.content ? getMentions(values.content).map((item: any) => item.value)
+          : null,
       };
       statusFlowApi(statusFlow).then(response => {
         if (response.status === 0) {
@@ -105,7 +105,8 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
         id,
         start: values.scheduling[0].format(TIME_FORMAT),
         end: values.scheduling[1].format(TIME_FORMAT),
-        mentions: getMentions(values.content).map((item: any) => item.value),
+        mentions: values.content ? getMentions(values.content).map((item: any) => item.value)
+          : null,
         content: values.content,
       };
       updateDateApi(updateDate).then(response => {
@@ -164,7 +165,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
 
   renderStatus = (value: number, row: any) => {
     const statusColor = [
-      '#2db7f5', '#f50', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#87d068',
+      'blue', 'rgb(165, 158, 158)', 'blue', 'blue', 'blue', 'blue', 'cyan', 'green',
     ];
     const statusFlow = getStatusFlow(value);
     const { statusFormVisible } = this.state;
