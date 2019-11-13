@@ -69,6 +69,10 @@ export const Constant: RequirementConstant = {
     },
     {
       value: 7,
+      text: '验收通过',
+    },
+    {
+      value: 8,
       text: '已交付',
     },
   ],
