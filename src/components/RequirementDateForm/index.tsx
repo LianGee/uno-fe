@@ -19,7 +19,7 @@ const RegisterRequirementDateForm = (props: StatusFlowFormProps) => {
   return <Form>
     <Form.Item label="起止时间">
       {
-        getFieldDecorator('start', {
+        getFieldDecorator('scheduling', {
           rules: [
             {
               required: true,
@@ -31,7 +31,7 @@ const RegisterRequirementDateForm = (props: StatusFlowFormProps) => {
     </Form.Item>
     <Form.Item label="通知相关负责人">
       {
-        getFieldDecorator('information', {
+        getFieldDecorator('content', {
           rules: [
             {
               required: true,

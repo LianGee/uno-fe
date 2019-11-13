@@ -43,18 +43,23 @@ const UserModel: UserModelType = {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
+    * fetch(_, { call, put }) {
       const response = yield call(queryUsers);
       yield put({
         type: 'save',
-        payload: response,
+        payload: response.data,
       });
     },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    * fetchCurrent(_, { call, put }) {
+      let user = sessionStorage.getItem('user');
+      if (user === undefined) {
+        user = yield call(queryCurrent).data;
+      } else if (typeof user === 'string') {
+        user = JSON.parse(user);
+      }
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: user,
       });
     },
   },

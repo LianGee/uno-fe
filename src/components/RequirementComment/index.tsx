@@ -23,7 +23,7 @@ class RequirementComment extends Component<RequirementCommentProps, RequirementC
     if (id) {
       queryRequirementComments(id).then(response => {
         this.setState({
-          comments: response,
+          comments: response.data,
         });
       });
     }

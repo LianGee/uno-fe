@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import RegisterForm from '@/components/UserRegisterForm';
 import styles from './index.less';
+import { register } from '@/services/user';
 
 class Register extends Component {
   formRef: any;
@@ -16,7 +17,14 @@ class Register extends Component {
       if (err) {
         return err;
       }
-      window.location.href = '/user/login';
+      register(values).then(response => {
+        const { status, msg } = response;
+        if (status !== 0) {
+          notification.error(msg);
+          return;
+        }
+        window.location.href = '/user/login';
+      });
     });
   };
 

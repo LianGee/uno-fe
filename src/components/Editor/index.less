@@ -1,19 +1,21 @@
+@import '~antd/es/style/themes/default.less';
+
 .editor {
   :global {
+    ul {
+      list-style: inside;
+    }
+
+    ol {
+      list-style: decimal;
+    }
+
     .w-e-text {
       overflow-y: auto;
     }
 
     .w-e-text-container {
       border-radius: 0 0 .4em .4em;
-    }
-
-    .w-e-text ul {
-      list-style: inside;
-    }
-
-    .w-e-text ol {
-      list-style: decimal;
     }
 
     .w-e-toolbar {

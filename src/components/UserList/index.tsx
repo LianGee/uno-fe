@@ -63,7 +63,7 @@ class UserList extends Component<UserListProps, UserListState> {
     ];
     const { users } = this.state;
     return (
-      <Table columns={columns} dataSource={users}/>
+      <Table columns={columns} dataSource={users} rowKey="id"/>
     );
   }
 }

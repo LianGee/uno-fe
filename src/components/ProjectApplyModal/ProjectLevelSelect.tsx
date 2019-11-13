@@ -4,10 +4,10 @@ import { ProjectConstant } from '@/constant/project';
 
 const { Option } = Select;
 
-export default function ProjectPrioritySelect() {
+export default function ProjectLevelSelect() {
   return (
     <Select>
-      {ProjectConstant.PRIORITY.map((item: any) => (
+      {ProjectConstant.LEVEL.map((item: any) => (
         <Option value={item.value} key={item.value}>
           {item.text}
         </Option>

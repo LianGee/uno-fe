@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { Button, Input, Popover, Row, Table, Tag } from 'antd';
+import { Button, Input, Mentions, notification, Popover, Row, Table, Tag } from 'antd';
 import Link from 'umi/link';
 import { Project } from '@/models/project';
-import { queryFakeList } from '@/pages/project/requirement/service';
+import { queryRequirementByProjectId, statusFlowApi, updateDateApi } from '@/pages/project/requirement/service';
 import { Requirement } from '@/pages/project/requirement/data';
 import { Constant } from '@/constant/requirement';
 import { getStatusFlow } from '@/utils/StatusFlow';
 import StatusFlowForm from '@/components/StatusFlowForm';
 import styles from '@/pages/project/requirement/index.less';
 import RequirementDateForm from '@/components/RequirementDateForm';
+import { TIME_FORMAT } from '@/constant/global';
+
+const { getMentions } = Mentions;
 
 const { Search } = Input;
 
@@ -23,7 +26,7 @@ interface RequirementListState {
   dateFormVisible: {};
 }
 
-const color = ['cyan', 'volcano', 'magenta'];
+const color = ['cyan', 'green', 'magenta'];
 
 class RequirementList extends Component<RequirementListProps, RequirementListState> {
   statusFormRef: any;
@@ -41,24 +44,23 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
   }
 
   componentDidMount(): void {
-    const { currentProject } = this.props;
-    queryFakeList({ projectId: currentProject.id }).then(response => {
-      this.setState({
-        requirements: response,
-      });
-    });
+    this.initData(this.props);
   }
 
   componentWillUpdate(nextProps: Readonly<RequirementListProps>): void {
-    if (nextProps !== this.props) {
-      const { currentProject } = nextProps;
-      queryFakeList({ projectId: currentProject.id }).then(response => {
-        this.setState({
-          requirements: response,
-        });
-      });
+    if (nextProps.currentProject !== this.props.currentProject) {
+      this.initData(nextProps);
     }
   }
+
+  initData = (props: any) => {
+    const { currentProject } = props;
+    queryRequirementByProjectId({ projectId: currentProject.id }).then(response => {
+      this.setState({
+        requirements: response.data,
+      });
+    });
+  };
 
   renderId = (value: any) => {
     const { currentProject } = this.props;
@@ -75,10 +77,22 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       if (err) {
         return;
       }
-      this.statusFormRef.resetFields();
-      const { statusFormVisible } = this.state;
-      statusFormVisible[id] = false;
-      this.setState({ statusFormVisible });
+      const statusFlow = {
+        id,
+        ...values,
+        mentions: values.content ? getMentions(values.content).map((item: any) => item.value)
+          : null,
+      };
+      statusFlowApi(statusFlow).then(response => {
+        if (response.status === 0) {
+          notification.success({ message: '状态流转成功' });
+          const { statusFormVisible } = this.state;
+          statusFormVisible[id] = false;
+          this.setState({ statusFormVisible });
+        } else {
+          notification.error({ message: response.msg });
+        }
+      });
     });
   };
 
@@ -87,13 +101,28 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
       if (err) {
         return;
       }
-      const { dateFormVisible } = this.state;
-      dateFormVisible[id] = {
-        start: false,
-        end: false,
+      const updateDate = {
+        id,
+        start: values.scheduling[0].format(TIME_FORMAT),
+        end: values.scheduling[1].format(TIME_FORMAT),
+        mentions: values.content ? getMentions(values.content).map((item: any) => item.value)
+          : null,
+        content: values.content,
       };
-      this.dateFormRef.resetFields();
-      this.setState({ dateFormVisible });
+      updateDateApi(updateDate).then(response => {
+        if (response.status === 0) {
+          notification.success({ message: '更新日期成功' });
+          const { dateFormVisible } = this.state;
+          dateFormVisible[id] = {
+            start: false,
+            end: false,
+          };
+          this.dateFormRef.resetFields();
+          this.setState({ dateFormVisible });
+        } else {
+          notification.error({ message: response.msg });
+        }
+      });
     });
   };
 
@@ -136,7 +165,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
 
   renderStatus = (value: number, row: any) => {
     const statusColor = [
-      '#2db7f5', '#f50', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#2db7f5', '#87d068',
+      'blue', 'rgb(165, 158, 158)', 'blue', 'blue', 'blue', 'blue', 'cyan', 'green',
     ];
     const statusFlow = getStatusFlow(value);
     const { statusFormVisible } = this.state;

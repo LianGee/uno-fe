@@ -42,6 +42,7 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
           rules: [
             {
               required: true,
+              message: '请选择指派对象',
             },
           ],
         })(<UserSelect/>)
@@ -49,10 +50,9 @@ const RegisterStatusFlowForm = (props: StatusFlowFormProps) => {
     </Form.Item>
     <Form.Item label="通知相关负责人">
       {
-        getFieldDecorator('information', {
+        getFieldDecorator('content', {
           rules: [
             {
-              required: true,
               message: '请填写通知信息',
             },
           ],

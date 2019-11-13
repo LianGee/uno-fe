@@ -7,7 +7,8 @@ import { EDITOR_MENU } from './config';
 interface EditorProps {
   onChange: any;
   preview?: boolean;
-  id?: number;
+  id?: any;
+  value?: any;
 }
 
 interface EditorState {
@@ -25,15 +26,15 @@ class Editor extends Component<EditorProps, EditorState> {
 
   constructor(props: any) {
     super(props);
-    const { preview } = this.props;
+    const { preview, value } = this.props;
     this.state = {
-      value: '',
+      value,
       preview,
     };
   }
 
   componentDidMount(): void {
-    const { id } = this.props;
+    const { id, value } = this.props;
     const elem = document.getElementById(`editor${id}`);
     const editor = new E(elem);
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
@@ -47,6 +48,7 @@ class Editor extends Component<EditorProps, EditorState> {
     editor.customConfig.menus = EDITOR_MENU;
     editor.customConfig.zIndex = 100;
     editor.create();
+    editor.txt.html(value);
     const toolbars = document.getElementsByClassName('w-e-toolbar');
     for (let i = 0; i < toolbars.length; i += 1) {
       const toolBar: HTMLElement = toolbars[i] as HTMLElement;
@@ -84,7 +86,7 @@ class Editor extends Component<EditorProps, EditorState> {
           <Icon style={{ float: 'right' }} type="edit" onClick={this.modeChange}/>
           <div
             id={`content${id}`}
-            className="w-e-text" style={{ overflow: 'hidden' }}
+            className={styles.editor} style={{ overflow: 'hidden' }}
             dangerouslySetInnerHTML={{ __html: value }}
           />
         </div>

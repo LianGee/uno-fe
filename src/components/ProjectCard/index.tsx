@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, Form, Icon, Tag, Typography } from 'antd';
+import { Card, Form, Icon, notification, Tag, Typography } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import styles from './index.less';
 import { priority, type } from '@/constant/project';
 import { Project } from '@/models/project';
 import ProjectApplyModal from '@/components/ProjectApplyModal';
+import { save } from '@/pages/project/manager/service';
 
 const { Paragraph } = Typography;
 
@@ -23,9 +24,10 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
 
   constructor(props: any) {
     super(props);
+    const { project } = props;
     this.state = {
       visible: false,
-      currentProject: (undefined as unknown) as Project,
+      currentProject: project,
     };
   }
 
@@ -34,8 +36,20 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', values);
+      const { currentProject } = this.state;
+      const project = {
+        ...values,
+        id: currentProject.id,
+        logo: currentProject.logo,
+      };
+      save(project).then(response => {
+        if (response.status !== 0) {
+          notification.error({ message: response.msg });
+        } else {
+          notification.success({ message: '更新成功' });
+          window.location.reload();
+        }
+      });
       this.formRef.resetFields();
       this.setState({ visible: false });
     });
@@ -60,7 +74,7 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
   };
 
   render() {
-    const { project } = this.props;
+    const { currentProject } = this.state;
     const color = ['geekblue', 'volcano', 'magenta'];
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -74,30 +88,35 @@ export default class ProjectCard extends React.Component<ProjectCardProps, Proje
           hoverable
           className={styles.card}
           actions={[
-            <Icon type="edit" key="edit" onClick={this.onCardEdit} />,
-            <a href="https://ant.design/components/icon-cn/" target="blank">
-              <Icon type="arrow-right" />
+            <Icon type="edit" key="edit" onClick={this.onCardEdit}/>,
+            <a href={currentProject.frontendHost} target="_blank" rel="noopener noreferrer">
+              <Icon type="arrow-right"/>
             </a>,
           ]}
         >
           <Card.Meta
-            title={<a>{project.name}</a>}
-            avatar={<img alt="" className={styles.cardLogo} src={project.logo} />}
+            title={<a>{currentProject.name}</a>}
+            avatar={<img alt="" className={styles.cardLogo} src={currentProject.logo}/>}
             description={
               <section>
-                <Tag color="cyan">{project.business}</Tag>
-                <Tag color={color[project.priority || 0]}>{priority[project.priority || 0]}</Tag>
-                <Tag>{type[project.type || 0]}</Tag>
-                {project.language !== undefined
-                  ? project.language.map(item => <Tag key={item}>{item}</Tag>)
+                {
+                  currentProject.business ?
+                    <Tag color="cyan">{currentProject.business.chineseName}</Tag> : null
+                }
+                <Tag color={color[currentProject.level || 0]}>
+                  {priority[currentProject.level || 0]}
+                </Tag>
+                <Tag>{type[currentProject.type || 0]}</Tag>
+                {currentProject.language !== undefined
+                  ? currentProject.language.map(item => <Tag key={item}>{item}</Tag>)
                   : null}
                 <Paragraph className={styles.item} ellipsis={{ rows: 2 }}>
-                  {project.description}
+                  {currentProject.description}
                 </Paragraph>
                 <Form {...formItemLayout}>
                   <FormItem label="负责人">
-                    {project.owner !== undefined
-                      ? project.owner.map(item => <Tag key={item}>{item}</Tag>)
+                    {currentProject.owner !== undefined
+                      ? currentProject.owner.map(item => <Tag key={item}>{item}</Tag>)
                       : null}
                   </FormItem>
                 </Form>

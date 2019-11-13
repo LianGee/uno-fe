@@ -8,7 +8,7 @@ export default function ProjectLanguageSelect() {
   return (
     <Select mode="multiple">
       {ProjectConstant.LANGUAGE.map((item: any) => (
-        <Option value={item.value} key={item.value}>
+        <Option value={item.text} key={item.text}>
           {item.text}
         </Option>
       ))}

@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Card, Col, Mentions, Row, Typography } from 'antd';
+import { Button, Card, Col, Form, Mentions, notification, Row, Typography } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
 import { Requirement } from '@/pages/project/requirement/data';
-import { queryRequirementById } from '@/pages/project/requirement/service';
+import { queryRequirementById, save } from '@/pages/project/requirement/service';
 import RequirementForm from '@/components/RequirementForm';
 import RequirementComment from '@/components/RequirementComment';
 import { ConnectState } from '@/models/connect';
+import { TIME_FORMAT } from '@/constant/global';
+import MentionAll from '@/components/Mention';
 
 const { Paragraph } = Typography;
-const { Option, getMentions } = Mentions;
+const { Option } = Mentions;
 
 interface RequirementDetailProps extends ConnectState {
   location: any;
@@ -37,8 +39,8 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     this.state = {
       requirement: {} as Requirement,
       isCreate: false,
-      id: 0,
-      comment: '',
+      id: undefined as unknown as number,
+      comment: [],
     };
   }
 
@@ -53,7 +55,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     if (query.id) {
       queryRequirementById(query.id).then(response => {
         this.setState({
-          requirement: response,
+          requirement: response.data,
           id: query.id,
         });
       });
@@ -61,7 +63,11 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
   }
 
   onTitleChange = (title: any) => {
-    console.log(title);
+    const { requirement } = this.state;
+    requirement.title = title;
+    this.setState({
+      requirement,
+    });
     return title;
   };
 
@@ -88,14 +94,32 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
   };
 
   onSubmit = () => {
-    const { comment, requirement } = this.state;
-    console.log(this.state, getMentions(comment), requirement);
+    const { project, user } = this.props;
     this.formRef.validateFields((err: any, values: any) => {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
-      this.formRef.resetFields();
+      const { scheduling } = values;
+      const createRequirement = {
+        id: this.state.id,
+        title: this.state.requirement.title,
+        projectId: project.currentProject.id,
+        priority: values.priority,
+        type: values.type,
+        content: values.content,
+        assignTo: values.assignTo,
+        start: scheduling[0].format(TIME_FORMAT),
+        end: scheduling[1].format(TIME_FORMAT),
+        creator: user.currentUser ? user.currentUser.name : undefined,
+        status: this.state.requirement.status,
+      };
+      save(createRequirement).then(response => {
+        if (response.status !== 0) {
+          notification.info({ message: response.msg });
+        } else {
+          notification.success({ message: '成功' });
+        }
+      });
     });
   };
 
@@ -113,6 +137,19 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
 
   render() {
     const { requirement, isCreate, id } = this.state;
+    const formLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 4,
+        },
+      },
+    };
     return (
       <PageHeaderWrapper title={false}>
         <Card title={this.renderTitle()} className={styles.card}>
@@ -123,17 +160,19 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
                 requirement={requirement}
                 onChange={this.onChange}
               />
-              <RequirementComment id={id}/>
-              <div className={styles.comment}>
-                <Mentions rows={3} placeholder="使用@圈人" onChange={this.onCommentChange}>
-                  <Option value="afc163">afc163</Option>
-                  <Option value="zombieJ">zombieJ</Option>
-                  <Option value="yesmeck">yesmeck</Option>
-                </Mentions>
-                <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
-                  提交
-                </Button>
-              </div>
+              <Form {...formLayout}>
+                <Form.Item {...tailFormItemLayout}>
+                  <RequirementComment id={id}/>
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <MentionAll rows={3} onChange={this.onCommentChange}/>
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                  <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
+                    提交
+                  </Button>
+                </Form.Item>
+              </Form>
             </>
           )}
         </Card>

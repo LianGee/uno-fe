@@ -1,12 +1,12 @@
 import React from 'react';
 import { Form, Input, Modal } from 'antd';
-import ProjectPrioritySelect from '@/components/ProjectApplyModal/ProjectPrioritySelect';
 import ProjectTypeSelect from '@/components/ProjectApplyModal/ProjectTypeSelect';
 import ProjectLanguageSelect from '@/components/ProjectApplyModal/ProjectLanguageSelect';
 import ProjectBusinessSelect from '@/components/ProjectApplyModal/ProjectBusinessSelect';
 import UserSelect from '@/components/UserSelect';
 import { ProjectConstant } from '@/constant/project';
 import { Project } from '@/models/project';
+import ProjectLevelSelect from '@/components/ProjectApplyModal/ProjectLevelSelect';
 
 interface ProjectApplyModalProps {
   visible: boolean;
@@ -19,11 +19,11 @@ interface ProjectApplyModalProps {
 
 const defaultValues: Project = {
   name: '',
-  priority: ProjectConstant.PRIORITY[0].value,
+  level: ProjectConstant.LEVEL[0].value,
   description: '',
   type: ProjectConstant.TYPE[0].value,
-  language: [ProjectConstant.LANGUAGE[0].value],
-  business: 0,
+  language: [ProjectConstant.LANGUAGE[0].text],
+  businessId: 0,
   frontendHost: '',
   backendHost: '',
   owner: [],
@@ -55,19 +55,18 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
             ],
             initialValue: initialValues.name,
             validateTrigger: 'onBlur',
-          })(<Input />)}
+          })(<Input/>)}
         </Form.Item>
         <Form.Item label="等级">
           {getFieldDecorator('priority', {
-            initialValue: initialValues.priority,
+            initialValue: initialValues.level,
             rules: [
               {
                 required: true,
                 message: '请选择服务等级',
               },
             ],
-            validateTrigger: 'onBlur',
-          })(ProjectPrioritySelect())}
+          })(ProjectLevelSelect())}
         </Form.Item>
         <Form.Item label="用途描述" extra="请简述服务用途">
           {getFieldDecorator('description', {
@@ -80,7 +79,7 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
               },
             ],
             initialValue: initialValues.description,
-          })(<Input />)}
+          })(<Input/>)}
         </Form.Item>
         <Form.Item label="类型">
           {getFieldDecorator('type', {
@@ -105,25 +104,25 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
           })(ProjectLanguageSelect())}
         </Form.Item>
         <Form.Item label="业务线">
-          {getFieldDecorator('business', {
-            initialValue: initialValues.business,
+          {getFieldDecorator('businessId', {
+            initialValue: initialValues.businessId,
             rules: [
               {
                 required: true,
                 message: '请选择业务线',
               },
             ],
-          })(ProjectBusinessSelect())}
+          })(<ProjectBusinessSelect/>)}
         </Form.Item>
         <Form.Item label="前端域名" extra="前端/后端域必填一个">
           {getFieldDecorator('frontendHost', {
             initialValue: initialValues.frontendHost,
-          })(<Input />)}
+          })(<Input/>)}
         </Form.Item>
         <Form.Item label="后端域名" extra="前端/后端域必填一个">
           {getFieldDecorator('backendHost', {
             initialValue: initialValues.backendHost,
-          })(<Input />)}
+          })(<Input/>)}
         </Form.Item>
         <Form.Item
           label="负责人"
@@ -134,11 +133,10 @@ const CreateProjectApplyModal = (props: ProjectApplyModalProps) => {
             rules: [
               {
                 required: true,
-                min: 2,
                 message: '负责人不得少于2个',
               },
             ],
-          })(<UserSelect />)}
+          })(<UserSelect/>)}
         </Form.Item>
       </Form>
     </Modal>
