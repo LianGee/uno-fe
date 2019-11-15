@@ -23,7 +23,7 @@ const defaultValues: Project = {
   description: '',
   type: ProjectConstant.TYPE[0].value,
   language: [ProjectConstant.LANGUAGE[0].text],
-  businessId: 0,
+  businessId: undefined as unknown as number,
   frontendHost: '',
   backendHost: '',
   owner: [],
