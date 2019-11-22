@@ -167,6 +167,12 @@ export default {
               ],
             },
             {
+              path: '/doc',
+              name: 'doc',
+              component: './doc/index',
+              icon: 'book',
+            },
+            {
               path: '/user',
               name: 'user',
               icon: 'user',
