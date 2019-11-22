@@ -56,12 +56,14 @@ const request = extend({
   },
 });
 
-request.interceptors.response.use(async (response) => {
+request.interceptors.response.use(async response => {
   const data = await response.clone().json();
   if (data && data.status === 30200) {
-    window.location.href = '/user/login';
+    console.log(data);
+    window.location.href = data.data;
   }
   return response;
 });
+
 
 export default request;

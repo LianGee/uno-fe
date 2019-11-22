@@ -14,6 +14,12 @@ export default class CommentList extends Component<CommentProps> {
   componentDidMount(): void {
   }
 
+  getDisplayName = (name: string) => name.substr(name.length - 2, name.length);
+
+  delete = (id: number) => {
+
+  };
+
   render() {
     const { comments } = this.props;
     return (
@@ -26,12 +32,18 @@ export default class CommentList extends Component<CommentProps> {
             <li>
               <Comment
                 author={item.user.name}
-                avatar={<Avatar src={item.user.avatar} alt={item.user.name}/>}
+                avatar={<Avatar style={{ backgroundColor: 'rgb(34, 149, 255)' }}
+                                size="large">{this.getDisplayName(item.user.chineseName)}</Avatar>}
                 content={item.content}
                 datetime={
-                  <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                    <span>{moment().fromNow()}</span>
+                  <Tooltip title={moment.unix(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                    <span>{moment.unix(item.createdAt).fromNow()}</span>
                   </Tooltip>
+                }
+                actions={
+                  [
+                    <span onClick={() => this.delete(item.id)}>删除</span>,
+                  ]
                 }
               />
             </li>

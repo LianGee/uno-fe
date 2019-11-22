@@ -51,15 +51,11 @@ const UserModel: UserModelType = {
       });
     },
     * fetchCurrent(_, { call, put }) {
-      let user = sessionStorage.getItem('user');
-      if (user === undefined) {
-        user = yield call(queryCurrent).data;
-      } else if (typeof user === 'string') {
-        user = JSON.parse(user);
-      }
+      const current = yield call(queryCurrent);
+      const { data } = current;
       yield put({
         type: 'saveCurrentUser',
-        payload: user,
+        payload: data,
       });
     },
   },

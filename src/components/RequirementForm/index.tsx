@@ -1,10 +1,12 @@
-import { DatePicker, Form, Radio } from 'antd';
+import { Button, DatePicker, Form, Radio } from 'antd';
 import React from 'react';
 import moment from 'moment';
 import { Constant, ValueText } from '@/constant/requirement';
 import Editor from '@/components/Editor';
 import UserSelect from '@/components/UserSelect';
 import { Requirement } from '@/pages/project/requirement/data';
+import MentionAll from '@/components/Mention';
+import RequirementComment from '@/components/RequirementComment';
 
 const { RangePicker } = DatePicker;
 
@@ -12,6 +14,7 @@ interface RequirementFormProps {
   form: any;
   requirement: Requirement;
   onChange: any;
+  onSubmit: any;
 }
 
 function contentChange(e: any) {
@@ -20,10 +23,22 @@ function contentChange(e: any) {
 
 const RegisterRequirementForm = (props: RequirementFormProps) => {
   const { getFieldDecorator } = props.form;
-  const { requirement } = props;
+  const { requirement, onSubmit } = props;
   const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
+  };
+  const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 14,
+        offset: 4,
+      },
+    },
   };
   return (
     <Form {...formItemLayout}>
@@ -92,6 +107,19 @@ const RegisterRequirementForm = (props: RequirementFormProps) => {
             [moment(requirement.start), moment(requirement.end)] : [],
         })(<RangePicker/>)}
       </Form.Item>
+      <Form.Item {...tailFormItemLayout}>
+        {
+          getFieldDecorator('comment', {})(<MentionAll rows={3}/>)
+        }
+      </Form.Item>
+      <Form.Item {...tailFormItemLayout}>
+        <Button style={{ float: 'right' }} onClick={onSubmit}>提交</Button>
+      </Form.Item>
+      {
+        requirement.id !== undefined ? <Form.Item {...tailFormItemLayout}>
+          <RequirementComment id={requirement.id}/>
+        </Form.Item> : null
+      }
     </Form>
   );
 };

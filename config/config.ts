@@ -245,7 +245,7 @@ export default {
 
   proxy: {
     '/apis': {
-      target: 'http://0.0.0.0:9577',
+      target: 'http://localhost:9577',
       changeOrigin: true,
       pathRewrite: { '^/apis': '' },
     },
