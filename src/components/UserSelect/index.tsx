@@ -41,6 +41,7 @@ class UserSelect extends Component<UserSelectProps, UserSelectState> {
   render() {
     const { width, onChange } = this.props;
     const { users, value } = this.state;
+    console.log('--->', this.props);
     return (
       <Select mode="multiple" style={{ width }} defaultValue={value} onChange={onChange}>
         {users.map((item: CurrentUser) => (
