@@ -167,6 +167,12 @@ export default {
               ],
             },
             {
+              path: '/doc',
+              name: 'doc',
+              component: './doc/index',
+              icon: 'book',
+            },
+            {
               path: '/user',
               name: 'user',
               icon: 'user',
@@ -245,7 +251,7 @@ export default {
 
   proxy: {
     '/apis': {
-      target: 'http://0.0.0.0:9577',
+      target: 'http://localhost:9577',
       changeOrigin: true,
       pathRewrite: { '^/apis': '' },
     },

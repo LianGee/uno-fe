@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Card, Col, Form, Mentions, notification, Row, Typography } from 'antd';
+import { Card, Col, Mentions, notification, Row, Typography } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
 import { Requirement } from '@/pages/project/requirement/data';
 import { queryRequirementById, save } from '@/pages/project/requirement/service';
 import RequirementForm from '@/components/RequirementForm';
-import RequirementComment from '@/components/RequirementComment';
 import { ConnectState } from '@/models/connect';
 import { TIME_FORMAT } from '@/constant/global';
-import MentionAll from '@/components/Mention';
 
 const { Paragraph } = Typography;
-const { Option } = Mentions;
+const { getMentions } = Mentions;
 
 interface RequirementDetailProps extends ConnectState {
   location: any;
@@ -22,9 +20,7 @@ interface RequirementDetailProps extends ConnectState {
 
 interface RequirementDetailState {
   requirement: Requirement;
-  isCreate: boolean;
   id: number;
-  comment: any;
 }
 
 @connect(({ project, user }: RequirementDetailProps) => ({
@@ -38,20 +34,17 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     super(props);
     this.state = {
       requirement: {} as Requirement,
-      isCreate: false,
       id: undefined as unknown as number,
-      comment: [],
     };
   }
 
   componentDidMount(): void {
+    this.init();
+  }
+
+  init = () => {
     const { location } = this.props;
     const { query } = location;
-    if (location.pathname === '/project/requirement/create') {
-      this.setState({
-        isCreate: true,
-      });
-    }
     if (query.id) {
       queryRequirementById(query.id).then(response => {
         this.setState({
@@ -60,7 +53,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
         });
       });
     }
-  }
+  };
 
   onTitleChange = (title: any) => {
     const { requirement } = this.state;
@@ -112,20 +105,21 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
         end: scheduling[1].format(TIME_FORMAT),
         creator: user.currentUser ? user.currentUser.name : undefined,
         status: this.state.requirement.status,
+        info: {
+          requirementId: this.state.id,
+          recipient: values.comment ? getMentions(values.comment).map((item: any) => item.value)
+            : undefined,
+          content: values.comment,
+        },
       };
       save(createRequirement).then(response => {
         if (response.status !== 0) {
           notification.info({ message: response.msg });
         } else {
           notification.success({ message: '成功' });
+          this.init();
         }
       });
-    });
-  };
-
-  onCommentChange = (comment: any) => {
-    this.setState({
-      comment,
     });
   };
 
@@ -136,45 +130,20 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
   };
 
   render() {
-    const { requirement, isCreate, id } = this.state;
-    const formLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 4,
-        },
-      },
-    };
+    const { requirement } = this.state;
     return (
       <PageHeaderWrapper title={false}>
         <Card title={this.renderTitle()} className={styles.card}>
-          {!isCreate && requirement.id === undefined ? null : (
-            <>
-              <RequirementForm
+          <>
+            {
+              requirement.id ? <RequirementForm
                 ref={this.saveFormRef}
                 requirement={requirement}
                 onChange={this.onChange}
-              />
-              <Form {...formLayout}>
-                <Form.Item {...tailFormItemLayout}>
-                  <RequirementComment id={id}/>
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                  <MentionAll rows={3} onChange={this.onCommentChange}/>
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                  <Button type="primary" className={styles.submitButton} onClick={this.onSubmit}>
-                    提交
-                  </Button>
-                </Form.Item>
-              </Form>
-            </>
-          )}
+                onSubmit={this.onSubmit}
+              /> : null
+            }
+          </>
         </Card>
       </PageHeaderWrapper>
     );

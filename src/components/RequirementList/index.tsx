@@ -89,6 +89,7 @@ class RequirementList extends Component<RequirementListProps, RequirementListSta
           const { statusFormVisible } = this.state;
           statusFormVisible[id] = false;
           this.setState({ statusFormVisible });
+          this.initData(this.props)
         } else {
           notification.error({ message: response.msg });
         }

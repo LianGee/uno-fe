@@ -11,6 +11,7 @@ export default {
   'menu.project.requirement.create': '新建需求',
   'menu.user': '用户',
   'menu.user.manager': '用户管理',
+  'menu.doc': '文档',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.login': '登录',
