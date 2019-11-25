@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Col, Row } from 'antd';
+import { Col, notification, Row } from 'antd';
 import Catalogue from '@/components/DocCatalogue';
 import styles from './index.less';
 import MarkdownEditor from '@/components/MarkdownEditor';
+import { ConnectState } from '@/models/connect';
+import { connect } from 'dva';
+import { queryByProjectId } from '@/pages/doc/service';
 
-interface DocProps {
+interface DocProps extends ConnectState {
 }
 
 interface DocState {
@@ -13,6 +16,10 @@ interface DocState {
   currentId?: any;
 }
 
+@connect(({ project, user }: ConnectState) => ({
+  project,
+  user,
+}))
 class Doc extends Component<DocProps, DocState> {
   constructor(props: any) {
     super(props);
@@ -22,22 +29,17 @@ class Doc extends Component<DocProps, DocState> {
   }
 
   componentDidMount(): void {
-    this.setState({
-      catalogue: [
-        { title: 'Expand to load', key: '0' },
-        { title: 'Expand to load', key: '1' },
-        {
-          title: 'Tree Node',
-          key: '2',
-          children: [
-            { title: 'Expand to load', key: '3' },
-            { title: 'Expand to load', key: '4' },
-            { title: 'Tree Node', key: '5', isLeaf: true },
-          ],
-        },
-      ],
-      currentId: 1,
-    });
+    const { project } = this.props;
+    if (project.currentProject !== undefined) {
+      queryByProjectId(project.currentProject.id).then(response => {
+        if (response.status !== 0) {
+          notification.error(response.msg);
+        } else {
+          const catalogue = response.data;
+          this.setState({ catalogue, currentId: catalogue.length > 0 ? catalogue[0].id : 0 });
+        }
+      });
+    }
   }
 
   save = (id: number, content: string) => {

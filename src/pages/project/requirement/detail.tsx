@@ -21,6 +21,7 @@ interface RequirementDetailProps extends ConnectState {
 interface RequirementDetailState {
   requirement: Requirement;
   id: number;
+  isCreate: boolean;
 }
 
 @connect(({ project, user }: RequirementDetailProps) => ({
@@ -35,6 +36,7 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
     this.state = {
       requirement: {} as Requirement,
       id: undefined as unknown as number,
+      isCreate: false,
     };
   }
 
@@ -52,6 +54,9 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
           id: query.id,
         });
       });
+      this.setState({ isCreate: false });
+    } else {
+      this.setState({ isCreate: true });
     }
   };
 
@@ -130,20 +135,18 @@ class RequirementDetail extends Component<RequirementDetailProps, RequirementDet
   };
 
   render() {
-    const { requirement } = this.state;
+    const { requirement, isCreate } = this.state;
     return (
       <PageHeaderWrapper title={false}>
         <Card title={this.renderTitle()} className={styles.card}>
-          <>
-            {
-              requirement.id ? <RequirementForm
-                ref={this.saveFormRef}
-                requirement={requirement}
-                onChange={this.onChange}
-                onSubmit={this.onSubmit}
-              /> : null
-            }
-          </>
+          {
+            (requirement.id !== undefined && !isCreate) || isCreate ? <RequirementForm
+              ref={this.saveFormRef}
+              requirement={requirement}
+              onChange={this.onChange}
+              onSubmit={this.onSubmit}
+            /> : null
+          }
         </Card>
       </PageHeaderWrapper>
     );
